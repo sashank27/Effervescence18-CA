@@ -1,7 +1,8 @@
-package org.effervescence.app18.ca
+package org.effervescence.app18.ca.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import org.effervescence.app18.ca.R
 
 class MainActivity : AppCompatActivity() {
 
