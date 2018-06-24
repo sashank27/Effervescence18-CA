@@ -39,8 +39,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun login() {
-        Log.d("LoginActivity", "Login")
+    private fun login() {
 
         if(!validate()){
             onLoginFailed()
@@ -75,7 +74,6 @@ class LoginActivity : AppCompatActivity() {
 
                         try{
                             val token = response.getString("key")
-                            Log.d("Token", token)
                             prefs[Constants.KEY_TOKEN] = token
                         } catch (e: Exception){
                             Log.d("Response", response.toString())
@@ -90,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onError(error: ANError) {
 
-                        if (error.getErrorCode() != 0) {
+                        if (error.errorCode != 0) {
                             val responseStr = error.errorBody
 
 
@@ -134,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    fun validate(): Boolean {
+    private fun validate(): Boolean {
         var valid = true
 
         val username = input_usernameLogin.text
