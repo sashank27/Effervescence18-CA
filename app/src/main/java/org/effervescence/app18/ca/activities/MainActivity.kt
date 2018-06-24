@@ -26,12 +26,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        //Getting the value of the user token
         prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
         val userToken: String? = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
 
+        //If its the default token it means we need to launch the login activity
         if(userToken == Constants.TOKEN_DEFAULT){
             startLogin()
         }
+
+        //else we can display the userId
+        //TODO this is the place where we will manage the start page for a user who has already logged in
         else {
             userID.text = "Hello user id " + userToken
             button.visibility = View.VISIBLE

@@ -21,13 +21,13 @@
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal" />
 
-        <!--  Email Label -->
+        <!--  Username Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_usernameLogin"
+            <android.support.design.widget.TextInputEditText  android:id="@+id/input_usernameLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
