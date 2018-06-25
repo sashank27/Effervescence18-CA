@@ -1,6 +1,5 @@
 package org.effervescence.app18.ca.activities
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +10,7 @@ import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startLogin(){
-        val loginIntent = Intent(this, LoginActivity::class.java)
-        startActivity(loginIntent)
+        startActivity<LoginActivity>()
     }
 }

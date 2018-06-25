@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.1'
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.jakewharton.timber:timber:4.7.0'
 

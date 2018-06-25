@@ -1,9 +1,7 @@
 package org.effervescence.app18.ca.activities
 
 import android.app.ProgressDialog
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.json.JSONObject
 import android.support.v7.app.AppCompatActivity
@@ -17,6 +15,8 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import org.effervescence.app18.ca.EffervescenceCA
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class SignupActivity : AppCompatActivity() {
 
@@ -24,38 +24,36 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        btn_signup.setOnClickListener {
+        btnSignup.setOnClickListener {
             signup()
         }
 
-        link_login.setOnClickListener {
-            val intentLoginActivity = Intent(this, LoginActivity::class.java)
-            startActivity(intentLoginActivity)
+        tvLinkLogin.setOnClickListener {
+            startActivity<LoginActivity>()
             finish()
             overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out)
         }
     }
 
     private fun signup() {
+        val username = inputUsernameSignup.text.toString()
+        val email =  inputEmailSignup.text.toString()
 
-        if (!validate()) {
+        val password = inputPasswordSignup.text.toString()
+        val reEnterPassword = inputReEnterPasswordSignup.text.toString()
+
+        if (!validate(username, email, password, reEnterPassword)) {
             onSignupFailed()
             return
         }
 
-        btn_signup.isEnabled = false
+        btnSignup.isEnabled = false
 
         val progressDialog = ProgressDialog(this@SignupActivity,
                 R.style.AppTheme_Dark_Dialog)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Creating Account...")
         progressDialog.show()
-
-        val username = input_username.text.toString()
-        val email =  input_email.text.toString()
-
-        val password = input_password.text.toString()
-        val reEnterPassword = input_reEnterPassword.text.toString()
 
 
         val prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
@@ -78,40 +76,24 @@ class SignupActivity : AppCompatActivity() {
                             Log.d("Response", response.toString())
                         }
 
-
-
                         onSignupSuccess()
-
                         progressDialog.dismiss()
                     }
 
                     override fun onError(error: ANError) {
-
                         if( error.errorCode != 0) {
-                            val responseStr = error.errorBody
-
-
-                            val errorResponse = JSONObject(responseStr)
-
+                            val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("username")) {
-                                val errorStrArray = errorResponse.getJSONArray("username")
-                                val errorInUserName = errorStrArray.getString(0)
-
-                                input_username.error = errorInUserName
+                                inputUsernameSignup.error = errorResponse.getJSONArray("username").getString(0)
                             }
 
                             if (errorResponse.has("email")) {
-                                val errorStrArray = errorResponse.getJSONArray("email")
-                                val errorInEmail = errorStrArray.getString(0)
-
-                                input_email.error = errorInEmail
+                                inputEmailSignup.error = errorResponse.getJSONArray("email").getString(0)
                             }
-
                         }
                         // handle error
                         onSignupFailed()
-
                         progressDialog.dismiss()
                     }
                 })
@@ -121,64 +103,55 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         // Disable going back to the MainActivity
-        moveTaskToBack(true)
+        //moveTaskToBack(true)
+        finishAffinity()
     }
 
 
     fun onSignupSuccess() {
-        btn_signup.isEnabled = true
+        btnSignup.isEnabled = true
         setResult(RESULT_OK, null)
         finish()
     }
 
     fun onSignupFailed() {
-        Toast.makeText(baseContext, "Login failed", Toast.LENGTH_LONG).show()
+        toast("Sign up failed")
 
-        btn_signup.isEnabled = true
+        btnSignup.isEnabled = true
     }
 
-    private fun validate(): Boolean {
+    private fun validate(username: String, email: String, password: String, reEnterPassword: String): Boolean {
         var valid = true
 
-        val username = input_username.text
-        val email =  input_email.text
-
-        val password = input_password.text.toString()
-        val reEnterPassword = input_reEnterPassword.text.toString()
-
-
         if (username.isEmpty() || username.length < 3) {
-            input_username.error = "at least 3 characters"
+            inputUsernameSignup.error = "at least 3 characters"
             valid = false
         } else {
-            input_username.error = null
+            inputUsernameSignup.error = null
         }
-
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            input_email.error = "enter a valid email address"
+            inputEmailSignup.error = "enter a valid email address"
             valid = false
         } else {
-            input_email.error = null
+            inputEmailSignup.error = null
         }
 
-
-
         if (password.isEmpty() || password.length < 8) {
-            input_password.error = "Password must be atleast 8 characters"
+            inputPasswordSignup.error = "Password must be at least 8 characters"
             valid = false
         } else {
-            input_password.error = null
+            inputPasswordSignup.error = null
         }
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length < 8) {
-            input_reEnterPassword.error = "Password must be atleast 8 characters long"
+            inputReEnterPasswordSignup.error = "Password must be at least 8 characters long"
             valid = false
         } else if( reEnterPassword != password){
-            input_reEnterPassword.error = "Passwords do not match"
+            inputReEnterPasswordSignup.error = "Passwords do not match"
             valid = false
         } else {
-            input_reEnterPassword.error = null
+            inputReEnterPasswordSignup.error = null
         }
 
         return valid
