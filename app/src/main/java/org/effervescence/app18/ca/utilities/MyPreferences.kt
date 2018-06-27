@@ -23,7 +23,7 @@ object MyPreferences {
      * puts a key value pair in shared prefs if doesn't exists, otherwise updates value on given [key]
      */
     operator fun SharedPreferences.set(key: String, value: String) {
-        edit({ it.putString(key, value) })
+        edit { it.putString(key, value) }
     }
 
     /**
