@@ -38,9 +38,6 @@ class ChangePasswordActivity : AppCompatActivity() {
     }
 
     private fun changePassword() {
-        val currentPassword = currentPasswordEditTextView.text.toString()
-        val newPassword = newPasswordEditTextView.text.toString()
-        val confirmNewPassword = confirmNewPasswordEditTextView.text.toString()
 
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate
@@ -50,9 +47,9 @@ class ChangePasswordActivity : AppCompatActivity() {
 
         AndroidNetworking.post(Constants.CHANGE_PASSWORD_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_BASE_VALUE + userToken)
-                .addBodyParameter(Constants.NEW_PASSWORD_KEY, newPassword)
-                .addBodyParameter(Constants.CONFIRM_NEW_PASSWORD_KEY, confirmNewPassword)
-                .addBodyParameter(Constants.CURRENT_PASSWORD_KEY, currentPassword)
+                .addBodyParameter(Constants.NEW_PASSWORD_KEY, newPasswordEditTextView.text.toString())
+                .addBodyParameter(Constants.CONFIRM_NEW_PASSWORD_KEY, confirmNewPasswordEditTextView.text.toString())
+                .addBodyParameter(Constants.CURRENT_PASSWORD_KEY, currentPasswordEditTextView.text.toString())
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
