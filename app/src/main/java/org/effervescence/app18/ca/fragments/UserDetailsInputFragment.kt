@@ -26,7 +26,7 @@ import org.effervescence.app18.ca.utilities.MyPreferences.set
 
 class UserDetailsInputFragment : Fragment() {
 
-    var dobString: String = "0000-00-00"
+    var dobString: String = Constants.DATE_OF_BIRTH_DEFAULT
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -58,14 +58,6 @@ class UserDetailsInputFragment : Fragment() {
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
 
-        //Saving user details in shared preferences
-        prefs[Constants.NAME_KEY] = name
-        prefs[Constants.COLLEGE_NAME_KEY] = collegeName
-        prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
-        prefs[Constants.GENDER_KEY] = getSelectedGender()
-        prefs[Constants.MOBILE_NO_KEY] = mobileNo
-
-
         AndroidNetworking.post(Constants.REGULAR_USER_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
                 .addBodyParameter(Constants.NAME_KEY, name)
@@ -77,6 +69,14 @@ class UserDetailsInputFragment : Fragment() {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
                         progressDialog.dismiss()
+
+                        //Saving user details in shared preferences
+                        prefs[Constants.NAME_KEY] = name
+                        prefs[Constants.COLLEGE_NAME_KEY] = collegeName
+                        prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
+                        prefs[Constants.GENDER_KEY] = getSelectedGender()
+                        prefs[Constants.MOBILE_NO_KEY] = mobileNo
+
                         activity?.finish()
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
                         startActivity(Intent(context, MainActivity::class.java))
