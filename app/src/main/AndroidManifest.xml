@@ -21,15 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.LoginActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".activities.SignupActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".activities.ChangePasswordActivity"></activity>
+        <activity android:name=".activities.ChangePasswordActivity" />
+        <activity android:name=".activities.LoginSignupActivity"></activity>
     </application>
 
 </manifest>

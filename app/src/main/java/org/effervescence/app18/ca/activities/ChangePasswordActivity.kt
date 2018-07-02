@@ -39,6 +39,11 @@ class ChangePasswordActivity : AppCompatActivity() {
 
     private fun changePassword() {
 
+        if(newPasswordEditTextView.text.toString() != confirmNewPasswordEditTextView.text.toString()) {
+            confirmNewPasswordEditTextView.error = "Password didn't match"
+            return
+        }
+
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate
         progressDialog.setMessage("Changing password..")
@@ -46,7 +51,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         progressDialog.show()
 
         AndroidNetworking.post(Constants.CHANGE_PASSWORD_URL)
-                .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_BASE_VALUE + userToken)
+                .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
                 .addBodyParameter(Constants.NEW_PASSWORD_KEY, newPasswordEditTextView.text.toString())
                 .addBodyParameter(Constants.CONFIRM_NEW_PASSWORD_KEY, confirmNewPasswordEditTextView.text.toString())
                 .addBodyParameter(Constants.CURRENT_PASSWORD_KEY, currentPasswordEditTextView.text.toString())
@@ -59,10 +64,8 @@ class ChangePasswordActivity : AppCompatActivity() {
                     }
 
                     override fun onError(error: ANError) {
-                        progressDialog.dismiss()
-                        toast("Passwords didn't match")
+                        //Handle any error other than password mismatch
                     }
                 })
     }
-
 }

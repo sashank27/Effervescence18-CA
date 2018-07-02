@@ -1,43 +1,44 @@
-package org.effervescence.app18.ca.activities
+package org.effervescence.app18.ca.fragments
 
 import android.app.ProgressDialog
-import android.util.Log
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import org.json.JSONObject
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_signup.*
+import android.support.v4.app.Fragment
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import kotlinx.android.synthetic.main.fragment_signup.*
+import org.effervescence.app18.ca.EffervescenceCA
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.set
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import org.effervescence.app18.ca.EffervescenceCA
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
+import org.json.JSONObject
 
-class SignupActivity : AppCompatActivity() {
+class SignupFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
-        btnSignup.setOnClickListener {
-            signup()
-        }
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_signup, container, false)
+    }
 
-        tvLinkLogin.setOnClickListener {
-            startActivity<LoginActivity>()
-            finish()
-            overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out)
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnSignup.setOnClickListener { signup() }
+        tvLinkLogin.setOnClickListener { showLoginFragment() }
     }
 
     private fun signup() {
         val username = inputUsernameSignup.text.toString()
-        val email =  inputEmailSignup.text.toString()
+        val email = inputEmailSignup.text.toString()
 
         val password = inputPasswordSignup.text.toString()
         val reEnterPassword = inputReEnterPasswordSignup.text.toString()
@@ -49,14 +50,14 @@ class SignupActivity : AppCompatActivity() {
 
         btnSignup.isEnabled = false
 
-        val progressDialog = ProgressDialog(this@SignupActivity,
-                R.style.AppTheme_Dark_Dialog)
+        val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Creating Account...")
+        progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.show()
 
 
-        val prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
+        val prefs = MyPreferences.customPrefs(context!!, Constants.MY_SHARED_PREFERENCE)
 
         AndroidNetworking.post(EffervescenceCA.BASE_URL + "/api/registration/")
                 .addBodyParameter("email", email)
@@ -69,19 +70,20 @@ class SignupActivity : AppCompatActivity() {
 
                     override fun onResponse(response: JSONObject) {
 
-                        try{
+                        try {
                             val token = response.getString("key")
                             prefs[Constants.KEY_TOKEN] = token
-                        } catch (e: Exception){
+                        } catch (e: Exception) {
                             Log.d("Response", response.toString())
                         }
 
                         onSignupSuccess()
                         progressDialog.dismiss()
+                        showUserDetailsInputFragment()
                     }
 
                     override fun onError(error: ANError) {
-                        if( error.errorCode != 0) {
+                        if (error.errorCode != 0) {
                             val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("username")) {
@@ -100,23 +102,29 @@ class SignupActivity : AppCompatActivity() {
 
     }
 
-
-    override fun onBackPressed() {
-        // Disable going back to the MainActivity
-        //moveTaskToBack(true)
-        finishAffinity()
+    fun showLoginFragment() {
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+        val loginFragment = LoginFragment()
+        transaction.setCustomAnimations(R.anim.push_right_out, R.anim.push_right_in)
+        transaction.replace(R.id.login_signup_fragment_holder, loginFragment)
+        transaction.commit()
     }
 
+    fun showUserDetailsInputFragment() {
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+        val userDetailsInputFragment = UserDetailsInputFragment()
+        transaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out)
+        transaction.replace(R.id.login_signup_fragment_holder, userDetailsInputFragment)
+        transaction.commit()
+    }
 
     fun onSignupSuccess() {
+        Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show()
         btnSignup.isEnabled = true
-        setResult(RESULT_OK, null)
-        finish()
     }
 
     fun onSignupFailed() {
-        toast("Sign up failed")
-
+        Toast.makeText(context, "Sign up failed", Toast.LENGTH_SHORT).show()
         btnSignup.isEnabled = true
     }
 
@@ -147,7 +155,7 @@ class SignupActivity : AppCompatActivity() {
         if (reEnterPassword.isEmpty() || reEnterPassword.length < 8) {
             inputReEnterPasswordSignup.error = "Password must be at least 8 characters long"
             valid = false
-        } else if( reEnterPassword != password){
+        } else if (reEnterPassword != password) {
             inputReEnterPasswordSignup.error = "Passwords do not match"
             valid = false
         } else {
@@ -156,4 +164,5 @@ class SignupActivity : AppCompatActivity() {
 
         return valid
     }
+
 }

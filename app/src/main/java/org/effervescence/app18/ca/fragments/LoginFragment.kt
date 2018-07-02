@@ -1,44 +1,44 @@
-package org.effervescence.app18.ca.activities
+package org.effervescence.app18.ca.fragments
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.util.Log
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import kotlinx.android.synthetic.main.activity_login.*
-import org.effervescence.app18.ca.EffervescenceCA
-import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.utilities.Constants
-import org.json.JSONObject
-import org.effervescence.app18.ca.utilities.MyPreferences
-import org.effervescence.app18.ca.utilities.MyPreferences.set
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
-import org.jetbrains.anko.startActivityForResult
-import org.jetbrains.anko.toast
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import kotlinx.android.synthetic.main.fragment_login.*
+import org.effervescence.app18.ca.EffervescenceCA
+import org.effervescence.app18.ca.R
+import org.effervescence.app18.ca.activities.MainActivity
+import org.effervescence.app18.ca.utilities.Constants
+import org.effervescence.app18.ca.utilities.MyPreferences
+import org.effervescence.app18.ca.utilities.MyPreferences.set
+import org.json.JSONObject
 
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : Fragment() {
 
-    //Random number assigned to the request code
-    private val REQUEST_SIGNUP = 44
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        btnLogin.setOnClickListener{
-            login()
-        }
-
-        tvLinkSignup.setOnClickListener {
-            startActivityForResult<SignupActivity>(REQUEST_SIGNUP)
-            finish()
-            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
-        }
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
-    private fun login() {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnLogin.setOnClickListener { login() }
+        tvLinkSignup.setOnClickListener { showSignupFragment() }
+    }
+
+    fun login() {
         val username = inputUsernameLogin.text.toString()
         val password = inputPasswordLogin.text.toString()
 
@@ -49,12 +49,13 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.isEnabled = false
 
-        val progressDialog = ProgressDialog(this, R.style.AppTheme_Dark_Dialog)
+        val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Authenticating..")
+        progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.show()
 
-        val prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
+        val prefs = MyPreferences.customPrefs(context!!, Constants.MY_SHARED_PREFERENCE)
 
         AndroidNetworking.post(EffervescenceCA.BASE_URL + "/api/login/")
                 .addBodyParameter("username", username)
@@ -94,14 +95,12 @@ class LoginActivity : AppCompatActivity() {
                 })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                //TODO If we need to implement any other activity or a transition on sign up this is where we
-                //would do that
-                this.finish()
-            }
-        }
+    fun showSignupFragment() {
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+        val signupFragment = SignupFragment()
+        transaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out)
+        transaction.replace(R.id.login_signup_fragment_holder, signupFragment)
+        transaction.commit()
     }
 
 
@@ -125,20 +124,16 @@ class LoginActivity : AppCompatActivity() {
         return valid
     }
 
-    override fun onBackPressed() {
-        // Disable going back to the MainActivity
-        //moveTaskToBack(true)
-        finishAffinity()
-    }
-
     fun onLoginSuccess() {
         btnLogin.isEnabled = true
-        finish()
+        val mainActivityIntent = Intent(context, MainActivity::class.java)
+        mainActivityIntent.putExtra("loginSuccessFetchUserDetails", true)
+        startActivity(mainActivityIntent)
+        activity?.finish()
     }
 
     fun onLoginFailed() {
-        toast("Login Failed")
-
+        Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
         btnLogin.isEnabled = true
     }
 }
