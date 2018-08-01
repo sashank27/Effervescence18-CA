@@ -84,7 +84,9 @@ class UserDetailsInputFragment : Fragment() {
                     override fun onError(error: ANError) {
                         progressDialog.dismiss()
                         Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
+                        userDetailsSubmitButton.isEnabled = true
                     }
+
                 })
     }
 

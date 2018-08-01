@@ -2,6 +2,7 @@ package org.effervescence.app18.ca.fragments
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -34,6 +35,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        inputPasswordLogin.typeface = Typeface.DEFAULT
         btnLogin.setOnClickListener { login() }
         tvLinkSignup.setOnClickListener { showSignupFragment() }
     }

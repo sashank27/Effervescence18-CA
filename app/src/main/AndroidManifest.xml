@@ -22,7 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChangePasswordActivity" />
-        <activity android:name=".activities.LoginSignupActivity"></activity>
+
+        <activity
+            android:name=".activities.LoginSignupActivity"
+            android:theme="@style/LoginSignupTheme">
+        </activity>
     </application>
 
 </manifest>
