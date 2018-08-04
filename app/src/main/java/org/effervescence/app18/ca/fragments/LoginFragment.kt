@@ -17,7 +17,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.effervescence.app18.ca.EffervescenceCA
 import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.activities.MainActivity
+import org.effervescence.app18.ca.activities.SplashActivity
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.set
@@ -128,7 +128,7 @@ class LoginFragment : Fragment() {
 
     fun onLoginSuccess() {
         btnLogin.isEnabled = true
-        val mainActivityIntent = Intent(context, MainActivity::class.java)
+        val mainActivityIntent = Intent(context, SplashActivity::class.java)
         mainActivityIntent.putExtra("loginSuccessFetchUserDetails", true)
         startActivity(mainActivityIntent)
         activity?.finish()

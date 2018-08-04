@@ -24,18 +24,13 @@ import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 
-class MainActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     lateinit var prefs: SharedPreferences
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         //Getting the value of the user token
         prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
@@ -57,23 +52,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun launchHomeActivity(){
-
         UserDetails.Name = prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]
         UserDetails.Token = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
         startActivity<HomeActivity>()
         finish()
-    }
-
-
-    fun displayUserDetails() {
-
-        val userDetailsString = "Name - ${prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]}\n" +
-                "College Name - ${prefs[Constants.COLLEGE_NAME_KEY, Constants.COLLEGE_NAME_DEFAULT]}\n" +
-                "Gender - ${prefs[Constants.GENDER_KEY, Constants.GENDER_DEFAULT]}\n" +
-                "Date of Birth - ${prefs[Constants.DATE_OF_BIRTH_KEY, Constants.DATE_OF_BIRTH_DEFAULT]}\n" +
-                "Mobile - ${prefs[Constants.MOBILE_NO_KEY, Constants.MOBILE_NO_DEFAULT]}"
-
-        userID.text = userDetailsString
     }
 
     private fun fetchUserDetailsThanDisplay() {
@@ -123,7 +105,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetSharedPreference() {
-        userID.text = ""
         prefs[Constants.KEY_TOKEN] = "0"
         prefs[Constants.NAME_KEY] = Constants.NAME_DEFAULT
         prefs[Constants.COLLEGE_NAME_KEY] = Constants.COLLEGE_NAME_DEFAULT

@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
-            android:launchMode="singleTop">
+            android:name=".activities.SplashActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,19 +26,14 @@
 
         <activity
             android:name=".activities.LoginSignupActivity"
-            android:theme="@style/LoginSignupTheme">
+            android:theme="@style/LoginSignupTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 
