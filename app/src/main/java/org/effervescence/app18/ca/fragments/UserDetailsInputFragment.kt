@@ -17,7 +17,7 @@ import com.androidnetworking.error.ANError
 import org.json.JSONObject
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.AndroidNetworking
-import org.effervescence.app18.ca.activities.MainActivity
+import org.effervescence.app18.ca.activities.SplashActivity
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.get
@@ -79,7 +79,7 @@ class UserDetailsInputFragment : Fragment() {
 
                         activity?.finish()
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(context, MainActivity::class.java))
+                        startActivity(Intent(context, SplashActivity::class.java))
                     }
                     override fun onError(error: ANError) {
                         progressDialog.dismiss()

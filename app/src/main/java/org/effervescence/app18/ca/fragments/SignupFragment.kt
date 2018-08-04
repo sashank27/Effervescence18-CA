@@ -105,7 +105,7 @@ class SignupFragment : Fragment() {
     fun showLoginFragment() {
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         val loginFragment = LoginFragment()
-        transaction.setCustomAnimations(R.anim.push_right_out, R.anim.push_right_in)
+        transaction.setCustomAnimations(R.anim.push_right_out_fast, R.anim.push_right_in_fast)
         transaction.replace(R.id.login_signup_fragment_holder, loginFragment)
         transaction.commit()
     }
