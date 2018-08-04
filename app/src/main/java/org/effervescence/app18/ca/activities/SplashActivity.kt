@@ -19,22 +19,18 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_user_details_input.*
 import org.effervescence.app18.ca.fragments.UserDetailsInputFragment
+import org.effervescence.app18.ca.utilities.UserDetails
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 
-class MainActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     lateinit var prefs: SharedPreferences
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         //Getting the value of the user token
         prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
@@ -50,23 +46,19 @@ class MainActivity : AppCompatActivity() {
                 if (prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT] == Constants.NAME_DEFAULT)
                     askForUserDetails()
                 else
-                    displayUserDetails()
+                    launchHomeActivity()
             }
         }
     }
 
-    fun displayUserDetails() {
-
-        val userDetailsString = "Name - ${prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]}\n" +
-                "College Name - ${prefs[Constants.COLLEGE_NAME_KEY, Constants.COLLEGE_NAME_DEFAULT]}\n" +
-                "Gender - ${prefs[Constants.GENDER_KEY, Constants.GENDER_DEFAULT]}\n" +
-                "Date of Birth - ${prefs[Constants.DATE_OF_BIRTH_KEY, Constants.DATE_OF_BIRTH_DEFAULT]}\n" +
-                "Mobile - ${prefs[Constants.MOBILE_NO_KEY, Constants.MOBILE_NO_DEFAULT]}"
-
-        userID.text = userDetailsString
+    fun launchHomeActivity(){
+        UserDetails.Name = prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]
+        UserDetails.Token = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
+        startActivity<HomeActivity>()
+        finish()
     }
 
-    fun fetchUserDetailsThanDisplay() {
+    private fun fetchUserDetailsThanDisplay() {
 
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = false
@@ -82,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
                         saveUserDetails(response)
-                        displayUserDetails()
+                        launchHomeActivity()
                         progressDialog.dismiss()
                     }
                     override fun onError(error: ANError) {
@@ -113,7 +105,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetSharedPreference() {
-        userID.text = ""
         prefs[Constants.KEY_TOKEN] = "0"
         prefs[Constants.NAME_KEY] = Constants.NAME_DEFAULT
         prefs[Constants.COLLEGE_NAME_KEY] = Constants.COLLEGE_NAME_DEFAULT
