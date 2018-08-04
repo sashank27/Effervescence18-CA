@@ -5,17 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".activities.LoginSignupActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background3" />
-
     <FrameLayout
-        android:layout_centerInParent="true"
         android:id="@+id/login_signup_fragment_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp">
     </FrameLayout>

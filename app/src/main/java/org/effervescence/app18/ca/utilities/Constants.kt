@@ -11,6 +11,7 @@ object Constants{
     const val MY_SHARED_PREFERENCE = "mypreference"
     const val KEY_TOKEN = "token"
     const val TOKEN_DEFAULT = "0"
+
     const val NAME_KEY = "name"
     const val NAME_DEFAULT = "name_NA"
     const val COLLEGE_NAME_KEY = "college"

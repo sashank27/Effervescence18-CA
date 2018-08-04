@@ -1,87 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="@color/white"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="8dp"
-    tools:context=".fragments.LoginFragment">
+    android:layout_height="match_parent">
 
-    <ScrollView
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
-        <LinearLayout
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="24dp">
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            tools:context=".fragments.LoginFragment">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="12dp"
-                android:src="@drawable/logo" />
-
-            <!--  Username Label -->
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="24dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/inputUsernameLogin"
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/logo" />
+
+                <!--  Username Label -->
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"
-                    android:inputType="textNoSuggestions|textVisiblePassword" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
 
-            <!--  Password Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                app:passwordToggleEnabled="true">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/inputUsernameLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Username"
+                        android:inputType="textNoSuggestions|textVisiblePassword" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/inputPasswordLogin"
+                <!--  Password Label -->
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:inputType="textPassword" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    app:passwordToggleEnabled="true">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnLogin"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
-                android:background="#512da8"
-                android:padding="12dp"
-                android:text="Login"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/inputPasswordLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:inputType="textPassword" />
+                </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tvLinkSignup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:text="No account yet? Create one"
-                android:textColor="#512da8"
-                android:textSize="16dip" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btnLogin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#512da8"
+                    android:padding="12dp"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
-    </ScrollView>
-</android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/tvLinkSignup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="No account yet? Create one"
+                    android:textColor="#512da8"
+                    android:textSize="16dip" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

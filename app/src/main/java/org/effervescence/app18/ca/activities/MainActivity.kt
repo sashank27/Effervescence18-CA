@@ -19,6 +19,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_user_details_input.*
 import org.effervescence.app18.ca.fragments.UserDetailsInputFragment
+import org.effervescence.app18.ca.utilities.UserDetails
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 
@@ -50,10 +51,19 @@ class MainActivity : AppCompatActivity() {
                 if (prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT] == Constants.NAME_DEFAULT)
                     askForUserDetails()
                 else
-                    displayUserDetails()
+                    launchHomeActivity()
             }
         }
     }
+
+    fun launchHomeActivity(){
+
+        UserDetails.Name = prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]
+        UserDetails.Token = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
+        startActivity<HomeActivity>()
+        finish()
+    }
+
 
     fun displayUserDetails() {
 
@@ -66,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         userID.text = userDetailsString
     }
 
-    fun fetchUserDetailsThanDisplay() {
+    private fun fetchUserDetailsThanDisplay() {
 
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = false
@@ -82,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
                         saveUserDetails(response)
-                        displayUserDetails()
+                        launchHomeActivity()
                         progressDialog.dismiss()
                     }
                     override fun onError(error: ANError) {
