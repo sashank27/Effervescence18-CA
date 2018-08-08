@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.nav_header_home.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.AboutFragment
 import org.effervescence.app18.ca.fragments.HomeFragment
+import org.effervescence.app18.ca.fragments.LeaderBoardFragment
 import org.effervescence.app18.ca.utilities.UserDetails
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -91,8 +92,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragmentClass = HomeFragment::class.java
             }
 
-            R.id.nav_about -> {
+            R.id.nav_leader_board -> {
                 selectedPage = 2
+                fragmentClass = LeaderBoardFragment::class.java
+            }
+
+            R.id.nav_about -> {
+                selectedPage = 3
                 fragmentClass = AboutFragment::class.java
             }
 
