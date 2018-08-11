@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_leader_board.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.R.id.leaderRecylcerView
 import org.effervescence.app18.ca.adapters.LeaderboardAdapter
+import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.listeners.ScrollListener
 import org.effervescence.app18.ca.models.LeaderbooardEntry
 import org.effervescence.app18.ca.utilities.Constants
@@ -28,12 +29,15 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class LeaderBoardFragment : Fragment() {
-
+    private var listener: OnFragmentInteractionListener? = null
     val list = ArrayList<LeaderbooardEntry>()
     lateinit var adapter: LeaderboardAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        if (listener != null) {
+            listener!!.setTitleTo("Leader Board")
+        }
         return inflater.inflate(R.layout.fragment_leader_board, container, false)
     }
 
@@ -92,5 +96,19 @@ class LeaderBoardFragment : Fragment() {
         back_view.text = "See where you stand among campus ambassadors of other colleges"
         progressLeaderboard.visibility = View.GONE
         leaderRecylcerView.visibility = View.VISIBLE
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 }
