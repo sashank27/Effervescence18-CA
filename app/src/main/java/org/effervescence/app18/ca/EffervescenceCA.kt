@@ -6,7 +6,7 @@ import timber.log.Timber
 class EffervescenceCA : Application() {
 
     companion object {
-        val BASE_URL = "https://a664ab4f.ngrok.io"  //Base url for the API's Server
+        val BASE_URL = "https://cb595495.ngrok.io"  //Base url for the API Server
     }
 
     override fun onCreate() {

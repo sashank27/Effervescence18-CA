@@ -23,7 +23,6 @@ import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 
-
 class UserDetailsInputFragment : Fragment() {
 
     var dobString: String = Constants.DATE_OF_BIRTH_DEFAULT
@@ -45,7 +44,7 @@ class UserDetailsInputFragment : Fragment() {
     fun submit() {
 
         userDetailsSubmitButton.isEnabled = false
-        
+
         val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Saving Information..")
@@ -58,46 +57,71 @@ class UserDetailsInputFragment : Fragment() {
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
 
-        AndroidNetworking.post(Constants.REGULAR_USER_URL)
-                .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
-                .addBodyParameter(Constants.NAME_KEY, name)
-                .addBodyParameter(Constants.COLLEGE_NAME_KEY, collegeName)
-                .addBodyParameter(Constants.DATE_OF_BIRTH_KEY, dobString)
-                .addBodyParameter(Constants.GENDER_KEY, getSelectedGender())
-                .addBodyParameter(Constants.MOBILE_NO_KEY, mobileNo)
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
-                        progressDialog.dismiss()
+        if (isInputValid()) {
+            AndroidNetworking.post(Constants.REGULAR_USER_URL)
+                    .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
+                    .addBodyParameter(Constants.NAME_KEY, name)
+                    .addBodyParameter(Constants.COLLEGE_NAME_KEY, collegeName)
+                    .addBodyParameter(Constants.DATE_OF_BIRTH_KEY, dobString)
+                    .addBodyParameter(Constants.GENDER_KEY, getSelectedGender())
+                    .addBodyParameter(Constants.MOBILE_NO_KEY, mobileNo)
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject) {
+                            progressDialog.dismiss()
 
-                        //Saving user details in shared preferences
-                        prefs[Constants.NAME_KEY] = name
-                        prefs[Constants.COLLEGE_NAME_KEY] = collegeName
-                        prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
-                        prefs[Constants.GENDER_KEY] = getSelectedGender()
-                        prefs[Constants.MOBILE_NO_KEY] = mobileNo
+                            //Saving user details in shared preferences
+                            prefs[Constants.NAME_KEY] = name
+                            prefs[Constants.COLLEGE_NAME_KEY] = collegeName
+                            prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
+                            prefs[Constants.GENDER_KEY] = getSelectedGender()
+                            prefs[Constants.MOBILE_NO_KEY] = mobileNo
 
-                        activity?.finish()
-                        Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(context, SplashActivity::class.java))
-                    }
-                    override fun onError(error: ANError) {
-                        progressDialog.dismiss()
-                        Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
-                        userDetailsSubmitButton.isEnabled = true
-                    }
+                            activity?.finish()
+                            Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(context, SplashActivity::class.java))
+                        }
 
-                })
+                        override fun onError(error: ANError) {
+                            progressDialog.dismiss()
+                            Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
+                            userDetailsSubmitButton.isEnabled = true
+                        }
+
+                    })
+        }
     }
 
-    fun showDatePickerDialog() {
+    private fun isInputValid(): Boolean {
+        return when {
+            nameEditTextView.text.toString() == "" -> {
+                nameEditTextView.error = "enter name"
+                false
+            }
+            collegeEditTextView.text.toString() == "" -> {
+                collegeEditTextView.error = "enter college name"
+                false
+            }
+            dobTextView.text == Constants.DATE_OF_BIRTH_DEFAULT -> {
+                dobTextView.text = "select D.O.B."
+                false
+            }
+            facebookLinkEditTextView.text.toString() == "" -> {
+                facebookLinkEditTextView.error = "enter FB link"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
-            dobString = formatDate(mYear, mMonth+1, mDayOfMonth)
+            dobString = formatDate(mYear, mMonth + 1, mDayOfMonth)
             dobTextView.text = dobString
         }, year, month, day)
         datePickerDialog.show()
@@ -106,7 +130,7 @@ class UserDetailsInputFragment : Fragment() {
     private fun getSelectedGender(): String {
         val selectedGenderId = genderRadioGroup.checkedRadioButtonId
 
-        return when(selectedGenderId) {
+        return when (selectedGenderId) {
             R.id.femaleRadioButton -> "F"
             else -> "M"
         }

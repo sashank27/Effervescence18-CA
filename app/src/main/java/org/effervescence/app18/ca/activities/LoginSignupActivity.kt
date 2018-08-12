@@ -3,13 +3,9 @@ package org.effervescence.app18.ca.activities
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.view.View
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.app_bar_home.*
 import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.fragments.LoginFragment
-import org.effervescence.app18.ca.fragments.SignupFragment
-import org.effervescence.app18.ca.fragments.UserDetailsInputFragment
+import org.effervescence.app18.ca.fragments.*
 
 class LoginSignupActivity : AppCompatActivity() {
 
@@ -53,8 +49,8 @@ class LoginSignupActivity : AppCompatActivity() {
 
     fun showUserDetailInputFragment() {
         val transaction = manager.beginTransaction()
-        val showUserDetailInputFragment = UserDetailsInputFragment()
-        transaction.replace(R.id.login_signup_fragment_holder, showUserDetailInputFragment)
+        val userDetailInputFragment = UserDetailsInputFragment()
+        transaction.replace(R.id.login_signup_fragment_holder, userDetailInputFragment)
         transaction.commit()
     }
 
