@@ -4,10 +4,11 @@ import org.effervescence.app18.ca.EffervescenceCA.Companion.BASE_URL
 
 
 object Constants{
-    const val BASE_URL = "https://cb595495.ngrok.io/api/"
+    private const val BASE_URL = "https://fb78147e.ngrok.io/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
     const val EVENTS_LIST_URL = BASE_URL + "events/"
+    const val FILE_UPLOAD_URL = BASE_URL + "file_upload/"
 
     const val MY_SHARED_PREFERENCE = "mypreference"
     const val KEY_TOKEN = "token"

@@ -1,24 +1,15 @@
 package org.effervescence.app18.ca.utilities
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.database.Cursor
-import android.drm.DrmStore
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.InputStream
 
 fun compressImage(context: Context?, imageUri: Uri, title: String): Uri? {
-
-    if (context != null) {
-
+    return if (context != null) {
         val imageStream: InputStream = context.contentResolver.openInputStream(imageUri)
         val options = BitmapFactory.Options()
         val size = imageStream.available()
@@ -31,8 +22,8 @@ fun compressImage(context: Context?, imageUri: Uri, title: String): Uri? {
         }
 
         val compressedImage = BitmapFactory.decodeStream(imageStream, null, options)
-        return getImageUri(context, compressedImage, title)
-    } else return null
+        getImageUri(context, compressedImage, title)
+    } else null
 }
 
 fun getImageUri(context: Context, imageBitmap: Bitmap, title: String): Uri {

@@ -87,8 +87,10 @@ class UserDetailsInputFragment : Fragment() {
                             Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
                             userDetailsSubmitButton.isEnabled = true
                         }
-
                     })
+        } else {
+            progressDialog.dismiss()
+            userDetailsSubmitButton.isEnabled = true
         }
     }
 
@@ -102,7 +104,7 @@ class UserDetailsInputFragment : Fragment() {
                 collegeEditTextView.error = "enter college name"
                 false
             }
-            dobTextView.text == Constants.DATE_OF_BIRTH_DEFAULT -> {
+            dobTextView.text.toString() == Constants.DATE_OF_BIRTH_DEFAULT -> {
                 dobTextView.text = "select D.O.B."
                 false
             }

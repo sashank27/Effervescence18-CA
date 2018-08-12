@@ -1,6 +1,7 @@
 package org.effervescence.app18.ca.fragments
 
 import android.app.Activity.RESULT_OK
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -24,10 +26,15 @@ import org.effervescence.app18.ca.utilities.EventDetails
 import org.effervescence.app18.ca.utilities.compressImage
 import org.json.JSONArray
 import org.json.JSONObject
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import org.effervescence.app18.ca.utilities.UserDetails
+import java.io.File
+
 
 class EventsFragment : Fragment() {
 
     private val IMAGE_PICKER_REQUEST_CODE = 1
+    private var pickedEventId = -1
 
     private var mEventDetailsList = ArrayList<EventDetails>()
     var listAdapter: MyEventsRecyclerViewAdapter = MyEventsRecyclerViewAdapter(mEventDetailsList)
@@ -46,12 +53,13 @@ class EventsFragment : Fragment() {
 
         listAdapter.setOnClickListener(object : MyEventsRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClicked(position: Int) {
+                pickedEventId = position+1
                 openImagePicker()
             }
         })
     }
 
-    fun buildRecyclerView() {
+    private fun buildRecyclerView() {
         mEventDetailsList = getEventsList()
         listAdapter.notifyDataSetChanged()
 
@@ -92,12 +100,49 @@ class EventsFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-
         if(requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val title = getTitleFromUri(data.data)
-            testIV.setImageURI(compressImage(activity?.applicationContext, data.data, title))
+            uploadImageWithURI(compressImage(activity?.applicationContext, data.data, title))
         }
+    }
+
+    private fun uploadImageWithURI(imageUri: Uri?) {
+
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Uploading...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.isIndeterminate = true
+        progressDialog.show()
+
+        if (imageUri != null) {
+            val file = File(imageUri.path)
+
+            AndroidNetworking.upload(Constants.FILE_UPLOAD_URL)
+                    .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + UserDetails.Token)
+                    .addMultipartFile("file", file)
+                    .addMultipartParameter(Constants.EVENT_ID_KEY, pickedEventId.toString())
+                    .build()
+                    .setUploadProgressListener { bytesUploaded, totalBytes ->
+                        // do anything with progress
+                    }
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject) {
+                            // do anything with response
+                            Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show()
+                            progressDialog.dismiss()
+                        }
+
+                        override fun onError(error: ANError) {
+                            // handle error
+                            Toast.makeText(context, error.errorBody.toString(), Toast.LENGTH_LONG).show()
+                            progressDialog.dismiss()
+                        }
+                    })
+        } else {
+            progressDialog.dismiss()
+            Toast.makeText(context, "Image not get selected properly", Toast.LENGTH_SHORT).show()
+        }
+        Toast.makeText(context, "Request Completed", Toast.LENGTH_LONG).show()
     }
 
     private fun getTitleFromUri(uri: Uri): String {
@@ -109,11 +154,14 @@ class EventsFragment : Fragment() {
 
             cursor.use { cursor ->
                 if(cursor != null && cursor.moveToFirst()) {
-                    result = getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                    val id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if(id != -1) {
+                        result = cursor.getString(id)
+                    }
                 }
             }
         }
-        if (result == null) {
+        if (result == "") {
             result = uri.path
             val cut = result.lastIndexOf('/')
 
