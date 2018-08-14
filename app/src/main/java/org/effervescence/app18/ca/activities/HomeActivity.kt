@@ -16,13 +16,14 @@ import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.AboutFragment
 import org.effervescence.app18.ca.fragments.EventsFragment
 import org.effervescence.app18.ca.fragments.HomeFragment
+import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.effervescence.app18.ca.utilities.UserDetails
 import org.jetbrains.anko.startActivity
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     private var fragment: Fragment? = null
     private var fragmentClass: Class<*>? = null
@@ -153,5 +154,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+    override fun setTitleTo(title: String) {
+        supportActionBar!!.title = title
     }
 }
