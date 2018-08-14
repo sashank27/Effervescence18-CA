@@ -10,6 +10,11 @@
             android:title="Home" />
 
         <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="Events"/>
+
+        <item
             android:id="@+id/nav_leader_board"
             android:icon="@drawable/ic_leader_board"
             android:title="Leaderboard"/>
