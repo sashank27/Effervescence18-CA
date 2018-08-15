@@ -42,7 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/inputUsernameLoginLayout">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/inputUsernameLogin"
@@ -58,14 +59,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    app:passwordToggleEnabled="true">
+                    app:passwordToggleEnabled="true"
+                    android:id="@+id/inputPasswordLoginLayout">
 
                     <EditText
                         android:id="@+id/inputPasswordLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="textPassword"
                         android:hint="Password"
-                        android:inputType="textPassword" />
+                        android:fontFamily="@font/quicksand" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.v7.widget.AppCompatButton

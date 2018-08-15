@@ -15,13 +15,15 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.effervescence.app18.ca.EffervescenceCA
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.activities.SplashActivity
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.json.JSONObject
+import android.text.method.PasswordTransformationMethod
+import org.jetbrains.anko.toast
+
 
 class LoginFragment : Fragment() {
 
@@ -36,6 +38,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         inputPasswordLogin.typeface = Typeface.DEFAULT
+        inputPasswordLogin.transformationMethod = PasswordTransformationMethod()
+
         btnLogin.setOnClickListener { login() }
         tvLinkSignup.setOnClickListener { showSignupFragment() }
     }
@@ -59,7 +63,7 @@ class LoginFragment : Fragment() {
 
         val prefs = MyPreferences.customPrefs(context!!, Constants.MY_SHARED_PREFERENCE)
 
-        AndroidNetworking.post(EffervescenceCA.BASE_URL + "/api/login/")
+        AndroidNetworking.post(Constants.LOGIN_URL)
                 .addBodyParameter("username", username)
                 .addBodyParameter("password", password)
                 .setPriority(Priority.MEDIUM)
@@ -84,10 +88,10 @@ class LoginFragment : Fragment() {
                             val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("username")) {
-                                inputUsernameLogin.error = errorResponse.getJSONArray("username").getString(0)
+                                inputUsernameLoginLayout.error = errorResponse.getJSONArray("username").getString(0)
                             }
                             if (errorResponse.has("non_field_errors")) {
-                                inputUsernameLogin.error = "Either the username or the password is incorrect"
+                                inputUsernameLoginLayout.error = "Either the username or the password is incorrect"
                             }
                         }
                         // handle error
@@ -110,17 +114,17 @@ class LoginFragment : Fragment() {
         var valid = true
 
         if (username.isEmpty() || username.length < 3) {
-            inputUsernameLogin.error = "at least 3 characters"
+            inputUsernameLoginLayout.error = "at least 3 characters"
             valid = false
         } else {
-            inputUsernameLogin.error = null
+            inputUsernameLoginLayout.error = null
         }
 
         if (password.isEmpty() || password.length < 8 ) {
-            inputPasswordLogin.error = "Password must be at least 8 characters"
+            inputPasswordLoginLayout.error = "Password must be at least 8 characters"
             valid = false
         } else {
-            inputPasswordLogin.error = null
+            inputPasswordLoginLayout.error = null
         }
 
         return valid
@@ -135,7 +139,7 @@ class LoginFragment : Fragment() {
     }
 
     fun onLoginFailed() {
-        Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
+        activity?.toast("Login Failed")
         btnLogin.isEnabled = true
     }
 }

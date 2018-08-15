@@ -1,15 +1,15 @@
 package org.effervescence.app18.ca.utilities
 
-import org.effervescence.app18.ca.EffervescenceCA.Companion.BASE_URL
-
-
 object Constants{
-    private const val BASE_URL = "https://73683551.ngrok.io/api/"
+    private const val BASE_URL = "http://192.168.43.92:8000/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
     const val EVENTS_LIST_URL = BASE_URL + "events/"
     const val LEADERBOARD_URL = BASE_URL + "leaderboard/"
     const val FILE_UPLOAD_URL = BASE_URL + "file_upload/"
+    const val LOGIN_URL = BASE_URL + "login/"
+    const val SIGNUP_URL = BASE_URL + "registration/"
+
     const val MY_SHARED_PREFERENCE = "mypreference"
     const val KEY_TOKEN = "token"
     const val TOKEN_DEFAULT = "0"
