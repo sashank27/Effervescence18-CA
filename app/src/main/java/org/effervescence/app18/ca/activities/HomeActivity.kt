@@ -13,13 +13,17 @@ import android.view.MenuItem
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
-import kotlinx.android.synthetic.main.nav_header_home.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.AboutFragment
+import org.effervescence.app18.ca.fragments.EventsFragment
 import org.effervescence.app18.ca.fragments.HomeFragment
 import org.effervescence.app18.ca.fragments.LeaderBoardFragment
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
+import org.effervescence.app18.ca.utilities.Constants
+import org.effervescence.app18.ca.utilities.MyPreferences
+import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.effervescence.app18.ca.utilities.UserDetails
+import org.jetbrains.anko.startActivity
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
@@ -27,17 +31,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var fragment: Fragment? = null
     private var fragmentClass: Class<*>? = null
     private var currentPage = 1
-
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -56,6 +55,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         supportFragmentManager.beginTransaction().replace(R.id.mainContentSpace, fragment).commit()
+
+        nav_view.setCheckedItem(R.id.nav_home)
+
+        prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
     }
 
     override fun onBackPressed() {
@@ -73,13 +76,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        when(item!!.itemId) {
+            R.id.logout -> {
+                resetSharedPreference()
+                finish()
+                return true
+            }
+            R.id.change_password -> changePassword()
         }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun resetSharedPreference() {
+        prefs[Constants.KEY_TOKEN] = "0"
+        prefs[Constants.NAME_KEY] = Constants.NAME_DEFAULT
+        prefs[Constants.COLLEGE_NAME_KEY] = Constants.COLLEGE_NAME_DEFAULT
+        prefs[Constants.GENDER_KEY] = Constants.GENDER_DEFAULT
+        prefs[Constants.DATE_OF_BIRTH_KEY] = Constants.DATE_OF_BIRTH_DEFAULT
+        prefs[Constants.MOBILE_NO_KEY] = Constants.MOBILE_NO_DEFAULT
+    }
+
+    private fun changePassword() {
+        startActivity<ChangePasswordActivity>()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -94,13 +112,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragmentClass = HomeFragment::class.java
             }
 
-            R.id.nav_leader_board -> {
+            R.id.nav_events -> {
                 selectedPage = 2
+                fragmentClass = EventsFragment::class.java
+            }
+
+            R.id.nav_leader_board -> {
+                selectedPage = 3
                 fragmentClass = LeaderBoardFragment::class.java
             }
 
             R.id.nav_about -> {
-                selectedPage = 3
+                selectedPage = 4
                 fragmentClass = AboutFragment::class.java
             }
 
