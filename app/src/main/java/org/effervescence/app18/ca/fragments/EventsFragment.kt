@@ -120,8 +120,8 @@ class EventsFragment : Fragment() {
 
             AndroidNetworking.upload(Constants.FILE_UPLOAD_URL)
                     .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + UserDetails.Token)
-                    .addMultipartFile("file", file)
                     .addMultipartParameter(Constants.EVENT_ID_KEY, pickedEventId.toString())
+                    .addMultipartFile("file", file)
                     .build()
                     .setUploadProgressListener { bytesUploaded, totalBytes ->
                         // do anything with progress

@@ -1,16 +1,16 @@
 package org.effervescence.app18.ca.activities
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.opengl.Visibility
+import android.net.Uri
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
@@ -21,7 +21,9 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.activity_main.*
+import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.utilities.UserDetails
+import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 import org.json.JSONObject
 
@@ -34,13 +36,13 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         //Getting the value of the user token
         prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
         userToken = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
 
-        if(writeRequestResponse == 0)
-            splashMessageTV.text = "Please grant storage permission manually, to access the app."
+        effe_logo.setOnClickListener { startAppSettings() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -58,7 +60,9 @@ class SplashActivity : AppCompatActivity() {
                             REQUEST_WRITE_PERMISSION)
                 })
                 builder.setNegativeButton("I'M SURE", DialogInterface.OnClickListener { _, _ ->
-
+                    writeRequestResponse = 0
+                    splashMessageTV.text = "Please grant storage permission manually, to access the app.\n" +
+                            "Tap effe logo to open app settings."
                 })
 
                 builder.create().show()
@@ -70,8 +74,6 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        Log.e("Start Activity", "Start Activity")
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -85,7 +87,15 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    fun checksAfterGettingPermission() {
+    override fun onResume() {
+        super.onResume()
+
+        if(writeRequestResponse == 0)
+            splashMessageTV.text = "Please grant storage permission manually, to access the app.\n" +
+                    "Tap effe logo to open app settings."
+    }
+
+    private fun checksAfterGettingPermission() {
         if (userToken == Constants.TOKEN_DEFAULT) {
             startLogin()
         } else {
@@ -159,34 +169,11 @@ class SplashActivity : AppCompatActivity() {
         finish()
     }
 
-//    private fun resetSharedPreference() {
-//        prefs[Constants.KEY_TOKEN] = "0"
-//        prefs[Constants.NAME_KEY] = Constants.NAME_DEFAULT
-//        prefs[Constants.COLLEGE_NAME_KEY] = Constants.COLLEGE_NAME_DEFAULT
-//        prefs[Constants.GENDER_KEY] = Constants.GENDER_DEFAULT
-//        prefs[Constants.DATE_OF_BIRTH_KEY] = Constants.DATE_OF_BIRTH_DEFAULT
-//        prefs[Constants.MOBILE_NO_KEY] = Constants.MOBILE_NO_DEFAULT
-//    }
-//
-//
-//    private fun changePassword() {
-//        startActivity<ChangePasswordActivity>()
-//    }
-//
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.main_menu, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-//        when (item!!.itemId) {
-//            R.id.logout -> {
-//                resetSharedPreference()
-//                finish()
-//                return true
-//            }
-//            R.id.change_password -> changePassword()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+    private fun startAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri =  Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivityForResult(intent, REQUEST_WRITE_PERMISSION)
+    }
+
 }

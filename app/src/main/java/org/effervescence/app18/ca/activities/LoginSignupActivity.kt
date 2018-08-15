@@ -1,11 +1,10 @@
 package org.effervescence.app18.ca.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.view.View
-import kotlinx.android.synthetic.main.fragment_login.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.LoginFragment
 import org.effervescence.app18.ca.fragments.SignupFragment
@@ -21,6 +20,12 @@ class LoginSignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login_signup)
 
         loadFragments(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        checkPermission()
     }
 
     private fun loadFragments(intent: Intent) {
@@ -58,5 +63,12 @@ class LoginSignupActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    fun checkPermission() {
+        if(Build.VERSION.SDK_INT >= 23 && checkSelfPermission(android.Manifest.permission
+                        .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
+        }
+    }
 
 }
