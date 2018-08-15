@@ -13,7 +13,7 @@ import org.effervescence.app18.ca.fragments.UserDetailsInputFragment
 class LoginSignupActivity : AppCompatActivity() {
 
     val manager = supportFragmentManager
-    var isLoginFragmentLoaded = false
+    private var isLoginFragmentLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class LoginSignupActivity : AppCompatActivity() {
         }
     }
 
-    fun showLoginFragment() {
+    private fun showLoginFragment() {
         val transaction = manager.beginTransaction()
         val loginFragment = LoginFragment()
         transaction.replace(R.id.login_signup_fragment_holder, loginFragment)
@@ -48,7 +48,7 @@ class LoginSignupActivity : AppCompatActivity() {
         isLoginFragmentLoaded = true
     }
 
-    fun showSignupFragment() {
+    private fun showSignupFragment() {
         val transaction = manager.beginTransaction()
         val signupFragment = SignupFragment()
         transaction.replace(R.id.login_signup_fragment_holder, signupFragment)
@@ -56,7 +56,7 @@ class LoginSignupActivity : AppCompatActivity() {
         isLoginFragmentLoaded = false
     }
 
-    fun showUserDetailInputFragment() {
+    private fun showUserDetailInputFragment() {
         val transaction = manager.beginTransaction()
         val showUserDetailInputFragment = UserDetailsInputFragment()
         transaction.replace(R.id.login_signup_fragment_holder, showUserDetailInputFragment)

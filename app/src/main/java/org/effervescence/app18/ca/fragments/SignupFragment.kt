@@ -13,11 +13,11 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_signup.*
-import org.effervescence.app18.ca.EffervescenceCA
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
 import org.effervescence.app18.ca.utilities.MyPreferences.set
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 
 class SignupFragment : Fragment() {
@@ -59,7 +59,7 @@ class SignupFragment : Fragment() {
 
         val prefs = MyPreferences.customPrefs(context!!, Constants.MY_SHARED_PREFERENCE)
 
-        AndroidNetworking.post(EffervescenceCA.BASE_URL + "/api/registration/")
+        AndroidNetworking.post(Constants.SIGNUP_URL)
                 .addBodyParameter("email", email)
                 .addBodyParameter("username", username)
                 .addBodyParameter("password1", password)
@@ -87,11 +87,12 @@ class SignupFragment : Fragment() {
                             val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("username")) {
-                                inputUsernameSignup.error = errorResponse.getJSONArray("username").getString(0)
+                                inputUsernameSignupLayout.error =
+                                        errorResponse.getJSONArray("username").getString(0)
                             }
 
                             if (errorResponse.has("email")) {
-                                inputEmailSignup.error = errorResponse.getJSONArray("email").getString(0)
+                                inputEmailSignupLayout.error = errorResponse.getJSONArray("email").getString(0)
                             }
                         }
                         // handle error
@@ -119,12 +120,13 @@ class SignupFragment : Fragment() {
     }
 
     fun onSignupSuccess() {
-        Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show()
+        activity?.toast("Registration Successful")
+        //"Registration Successful", Toast.LENGTH_SHORT).show()
         btnSignup.isEnabled = true
     }
 
     fun onSignupFailed() {
-        Toast.makeText(context, "Sign up failed", Toast.LENGTH_SHORT).show()
+        activity?.toast("Sign up failed")
         btnSignup.isEnabled = true
     }
 
@@ -132,34 +134,34 @@ class SignupFragment : Fragment() {
         var valid = true
 
         if (username.isEmpty() || username.length < 3) {
-            inputUsernameSignup.error = "at least 3 characters"
+            inputUsernameSignupLayout.error = "at least 3 characters"
             valid = false
         } else {
-            inputUsernameSignup.error = null
+            inputUsernameSignupLayout.error = null
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            inputEmailSignup.error = "enter a valid email address"
+            inputEmailSignupLayout.error = "enter a valid email address"
             valid = false
         } else {
-            inputEmailSignup.error = null
+            inputEmailSignupLayout.error = null
         }
 
         if (password.isEmpty() || password.length < 8) {
-            inputPasswordSignup.error = "Password must be at least 8 characters"
+            inputPasswordSignupLayout.error = "Password must be at least 8 characters"
             valid = false
         } else {
-            inputPasswordSignup.error = null
+            inputPasswordSignupLayout.error = null
         }
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length < 8) {
-            inputReEnterPasswordSignup.error = "Password must be at least 8 characters long"
+            inputReEnterPasswordSignupLayout.error = "Password must be at least 8 characters long"
             valid = false
         } else if (reEnterPassword != password) {
-            inputReEnterPasswordSignup.error = "Passwords do not match"
+            inputReEnterPasswordSignupLayout.error = "Passwords do not match"
             valid = false
         } else {
-            inputReEnterPasswordSignup.error = null
+            inputReEnterPasswordSignupLayout.error = null
         }
 
         return valid

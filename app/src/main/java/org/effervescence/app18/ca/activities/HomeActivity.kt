@@ -54,7 +54,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             e.printStackTrace()
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.mainContentSpace, fragment).commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainContentSpace, fragment).commit()
 
         nav_view.setCheckedItem(R.id.nav_home)
 
@@ -76,7 +77,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item!!.itemId) {
+        when(item.itemId) {
             R.id.logout -> {
                 resetSharedPreference()
                 finish()
@@ -102,7 +103,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        var currentFragmentClass = fragmentClass
+        val currentFragmentClass = fragmentClass
         fragmentClass = null
         var selectedPage = currentPage
 
@@ -153,7 +154,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     e.printStackTrace()
                 }
 
-                supportFragmentManager.beginTransaction().setCustomAnimations(startAnimation, endAnimation).replace(R.id.mainContentSpace, fragment).commit()
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(startAnimation, endAnimation)
+                        .replace(R.id.mainContentSpace, fragment)
+                        .commit()
             }
             else{
                 fragmentClass = currentFragmentClass

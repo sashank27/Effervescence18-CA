@@ -2,6 +2,7 @@ package org.effervescence.app18.ca.fragments
 
 import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -26,6 +27,7 @@ import org.effervescence.app18.ca.utilities.compressImage
 import org.json.JSONArray
 import org.json.JSONObject
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
 import org.effervescence.app18.ca.utilities.UserDetails
 import java.io.File
@@ -34,6 +36,7 @@ import java.util.*
 
 class EventsFragment : Fragment() {
 
+    private var listener: OnFragmentInteractionListener? = null
     private val IMAGE_PICKER_REQUEST_CODE = 1
     private var pickedEventId = -1
 
@@ -43,7 +46,9 @@ class EventsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        // Inflate the layout for this fragment
+        if (listener != null) {
+            listener!!.setTitleTo("Events")
+        }
         return inflater.inflate(R.layout.fragment_events, container, false)
     }
 
@@ -181,5 +186,19 @@ class EventsFragment : Fragment() {
                 eventJSONObject.optInt(Constants.EVENT_PRIZE_KEY),
                 eventJSONObject.optInt(Constants.EVENT_POINTS_KEY),
                 eventJSONObject.optInt(Constants.EVENT_FEE_KEY))
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 }
