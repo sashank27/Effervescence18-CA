@@ -113,6 +113,7 @@ class SplashActivity : AppCompatActivity() {
     fun launchHomeActivity() {
         UserDetails.Name = prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]
         UserDetails.Token = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
+        UserDetails.userName = prefs[Constants.KEY_USERNAME, Constants.USERNAME_DEFAULT]
         startActivity<HomeActivity>()
         finish()
     }

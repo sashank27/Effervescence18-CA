@@ -39,7 +39,14 @@ class ChangePasswordActivity : AppCompatActivity() {
 
     private fun changePassword() {
 
-        if(newPasswordEditTextView.text.toString() != confirmNewPasswordEditTextView.text.toString()) {
+        if(currentPasswordEditTextView.text.isEmpty() || newPasswordEditTextView.text.length < 8){
+            currentPasswordEditTextView.error = "Doesn't match the current password"
+        }
+        if(newPasswordEditTextView.text.isEmpty() || newPasswordEditTextView.text.length < 8){
+            newPasswordEditTextView.error = "Password must be at least 8 characters long"
+            return
+        }
+        else if(newPasswordEditTextView.text.toString() != confirmNewPasswordEditTextView.text.toString()) {
             confirmNewPasswordEditTextView.error = "Password didn't match"
             return
         }
