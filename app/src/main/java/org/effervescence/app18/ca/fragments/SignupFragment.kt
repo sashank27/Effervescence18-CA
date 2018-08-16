@@ -72,6 +72,7 @@ class SignupFragment : Fragment() {
 
                         try {
                             val token = response.getString("key")
+                            prefs[Constants.KEY_USERNAME] = username
                             prefs[Constants.KEY_TOKEN] = token
                         } catch (e: Exception) {
                             Log.d("Response", response.toString())

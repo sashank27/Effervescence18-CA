@@ -91,15 +91,16 @@ class UserDetailsInputFragment : Fragment() {
     }
 
     fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = 1999
+        val month = 0
+        val day = 1
 
         val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDayOfMonth ->
             dobString = formatDate(mYear, mMonth+1, mDayOfMonth)
             dobTextView.text = dobString
         }, year, month, day)
+        datePickerDialog.datePicker.maxDate = 1262304000
+
         datePickerDialog.show()
     }
 
