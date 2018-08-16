@@ -57,6 +57,8 @@ class UserDetailsInputFragment : Fragment() {
         val name = nameEditTextView.text.toString()
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
+        val referralCode = referralCodeEditTextView.text.toString()
+        val fbLink = "https://www.facebook.com/${fbUsernameEditTextView.text}"
 
         AndroidNetworking.post(Constants.REGULAR_USER_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
@@ -65,6 +67,8 @@ class UserDetailsInputFragment : Fragment() {
                 .addBodyParameter(Constants.DATE_OF_BIRTH_KEY, dobString)
                 .addBodyParameter(Constants.GENDER_KEY, getSelectedGender())
                 .addBodyParameter(Constants.MOBILE_NO_KEY, mobileNo)
+                .addBodyParameter(Constants.SUGGESTED_REFERRAL_KEY, referralCode)
+                .addBodyParameter(Constants.FB_ID_KEY, fbLink)
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
@@ -76,6 +80,7 @@ class UserDetailsInputFragment : Fragment() {
                         prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
                         prefs[Constants.GENDER_KEY] = getSelectedGender()
                         prefs[Constants.MOBILE_NO_KEY] = mobileNo
+                        prefs[Constants.FB_ID_KEY] = fbLink
 
                         activity?.finish()
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
@@ -86,7 +91,6 @@ class UserDetailsInputFragment : Fragment() {
                         Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
                         userDetailsSubmitButton.isEnabled = true
                     }
-
                 })
     }
 

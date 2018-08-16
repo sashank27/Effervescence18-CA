@@ -4,11 +4,15 @@ import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,11 +31,17 @@ import org.effervescence.app18.ca.utilities.compressImage
 import org.json.JSONArray
 import org.json.JSONObject
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import io.paperdb.Paper
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
+import org.effervescence.app18.ca.utilities.MyPreferences
+import org.effervescence.app18.ca.utilities.MyPreferences.get
+import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.effervescence.app18.ca.utilities.UserDetails
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
-import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EventsFragment : Fragment() {
@@ -39,12 +49,14 @@ class EventsFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private val IMAGE_PICKER_REQUEST_CODE = 1
     private var pickedEventId = -1
+    private lateinit var prefs: SharedPreferences
 
     private var mEventDetailsList = ArrayList<EventDetails>()
     var listAdapter: MyEventsRecyclerViewAdapter = MyEventsRecyclerViewAdapter(mEventDetailsList)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        prefs = MyPreferences.customPrefs(activity!!.applicationContext, Constants.MY_SHARED_PREFERENCE)
 
         if (listener != null) {
             listener!!.setTitleTo("Events")
@@ -59,45 +71,68 @@ class EventsFragment : Fragment() {
 
         listAdapter.setOnClickListener(object : MyEventsRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClicked(position: Int) {
-                pickedEventId = position+1
+                pickedEventId = position + 1
                 openImagePicker()
             }
         })
+
+        events_swipe_refresh.setOnRefreshListener { updateEventsListCache() }
     }
 
     private fun buildRecyclerView() {
-        mEventDetailsList = getEventsList()
-        listAdapter.notifyDataSetChanged()
+        getEventsList()
+        prefs[Constants.EVENTS_CACHED_KEY] = "true"
 
         events_list.setHasFixedSize(true)
         events_list.layoutManager = LinearLayoutManager(context)
         events_list.adapter = listAdapter
     }
 
-    fun getEventsList(): ArrayList<EventDetails> {
+    private fun updateEventsListCache() {
+        doAsync {
+            Paper.book().delete(Constants.EVENTS_CACHED_KEY)
+        }
+        mEventDetailsList.clear()
+        prefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
+        getEventsList()
+    }
 
+    private fun getEventsList() {
         var i = 0
-
-        AndroidNetworking.get(Constants.EVENTS_LIST_URL)
-                .setPriority(Priority.IMMEDIATE)
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
-                        if(response.length() > 0) {
-                            while (response.length() > i) {
-                                mEventDetailsList.add(createEventDetailsObject(response.getJSONObject(i++)))
-                                listAdapter.notifyItemChanged(i)
+        if (prefs[Constants.EVENTS_CACHED_KEY, Constants.EVENTS_CACHED_DEFAULT] == "true") {
+            doAsync {
+                mEventDetailsList = ArrayList(Paper.book().read<ArrayList<EventDetails>>(Constants.EVENTS_CACHED_KEY))
+                uiThread {
+                    listAdapter.swapList(mEventDetailsList)
+                    listAdapter.notifyDataSetChanged()
+                    events_list_progress_bar.visibility = View.GONE
+                }
+            }
+        } else {
+            AndroidNetworking.get(Constants.EVENTS_LIST_URL)
+                    .setPriority(Priority.IMMEDIATE)
+                    .build()
+                    .getAsJSONArray(object : JSONArrayRequestListener {
+                        override fun onResponse(response: JSONArray) {
+                            if (response.length() > 0) {
+                                while (response.length() > i) {
+                                    mEventDetailsList.add(createEventDetailsObject(response.getJSONObject(i++)))
+                                }
+                            }
+                            listAdapter.notifyDataSetChanged()
+                            events_list_progress_bar.visibility = View.GONE
+                            doAsync {
+                                Paper.book().write(Constants.EVENTS_CACHED_KEY, mEventDetailsList)
+                                uiThread {
+                                    events_swipe_refresh.isRefreshing = false
+                                }
                             }
                         }
-                        listAdapter.notifyDataSetChanged()
-                        events_list_progress_bar.visibility = View.GONE
-                    }
-
-                    override fun onError(error: ANError) {
-                        Log.e("EventsFragment", error.errorBody)
-                    }
-                })
-        return mEventDetailsList
+                        override fun onError(error: ANError) {
+                            Log.e("EventsFragment", error.errorBody)
+                        }
+                    })
+        }
     }
 
     fun openImagePicker() {
@@ -106,7 +141,7 @@ class EventsFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val title = getTitleFromUri(data.data)
             uploadImageWithURI(compressImage(activity?.applicationContext, data.data, title))
         }
@@ -155,14 +190,14 @@ class EventsFragment : Fragment() {
     private fun getTitleFromUri(uri: Uri): String {
         var result = ""
 
-        if(uri.scheme == "content") {
+        if (uri.scheme == "content") {
             val cursor = activity?.contentResolver?.query(uri, null, null,
                     null, null)
 
             cursor.use { cursor ->
-                if(cursor != null && cursor.moveToFirst()) {
+                if (cursor != null && cursor.moveToFirst()) {
                     val id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    if(id != -1) {
+                    if (id != -1) {
                         result = cursor.getString(id)
                     }
                 }
@@ -173,7 +208,7 @@ class EventsFragment : Fragment() {
             val cut = result.lastIndexOf('/')
 
             if (cut != -1)
-                result = result.substring(cut+1)
+                result = result.substring(cut + 1)
         }
         return result
     }
