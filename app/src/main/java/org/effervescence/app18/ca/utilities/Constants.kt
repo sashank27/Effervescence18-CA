@@ -1,7 +1,7 @@
 package org.effervescence.app18.ca.utilities
 
 object Constants{
-    private const val BASE_URL = "http://192.168.43.191:9000/api/"
+    private const val BASE_URL = "https://dcf721f1.ngrok.io/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
     const val EVENTS_LIST_URL = BASE_URL + "events/"
@@ -34,6 +34,9 @@ object Constants{
     const val MOBILE_NO_DEFAULT = "0000000000"
 
     const val FB_ID_KEY = "fb_id"
+    const val FB_ID_DEFAULT = "http://www.facebook.com/xxxxx"
+    const val REFERRAL_KEY = "referral"
+    const val REFERRAL_DEFAULT = "effe00000"
     const val SUGGESTED_REFERRAL_KEY = "suggested_referral"
 
     const val NEW_PASSWORD_KEY = "new_password1"
@@ -48,6 +51,9 @@ object Constants{
     const val EVENT_PRIZE_KEY = "prize"
     const val EVENT_POINTS_KEY = "points"
     const val EVENT_FEE_KEY = "fee"
+
+    const val EVENTS_CACHED_KEY = "events_cache"
+    const val EVENTS_CACHED_DEFAULT = "false"
 
 }
 

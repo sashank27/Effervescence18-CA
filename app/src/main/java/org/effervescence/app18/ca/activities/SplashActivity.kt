@@ -20,6 +20,7 @@ import org.jetbrains.anko.startActivity
 import com.androidnetworking.error.ANError
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.utilities.UserDetails
@@ -43,6 +44,7 @@ class SplashActivity : AppCompatActivity() {
         userToken = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
 
         effe_logo.setOnClickListener { startAppSettings() }
+        Paper.init(applicationContext)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -158,6 +160,8 @@ class SplashActivity : AppCompatActivity() {
         prefs[Constants.DATE_OF_BIRTH_KEY] = response.optString(Constants.DATE_OF_BIRTH_KEY)
         prefs[Constants.GENDER_KEY] = response.optString(Constants.GENDER_KEY)
         prefs[Constants.MOBILE_NO_KEY] = response.optString(Constants.MOBILE_NO_KEY)
+        prefs[Constants.REFERRAL_KEY] = response.optString(Constants.REFERRAL_KEY)
+        prefs[Constants.FB_ID_KEY] = response.optString(Constants.FB_ID_KEY)
     }
 
     fun askForUserDetails() {

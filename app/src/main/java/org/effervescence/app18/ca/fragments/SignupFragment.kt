@@ -149,7 +149,7 @@ class SignupFragment : Fragment() {
         }
 
         if (password.isEmpty() || password.length < 8) {
-            inputPasswordSignupLayout.error = "Password must be at least 8 characters"
+            inputPasswordSignupLayout.error = "Password must be at least 8 characters long"
             valid = false
         } else {
             inputPasswordSignupLayout.error = null

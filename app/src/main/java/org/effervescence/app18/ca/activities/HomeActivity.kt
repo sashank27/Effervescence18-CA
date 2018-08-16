@@ -1,5 +1,6 @@
 package org.effervescence.app18.ca.activities
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import org.effervescence.app18.ca.R
@@ -45,7 +47,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.userNameNav).text = UserDetails.Name
-
 
         fragmentClass = HomeFragment::class.java
         try {
@@ -95,6 +96,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         prefs[Constants.GENDER_KEY] = Constants.GENDER_DEFAULT
         prefs[Constants.DATE_OF_BIRTH_KEY] = Constants.DATE_OF_BIRTH_DEFAULT
         prefs[Constants.MOBILE_NO_KEY] = Constants.MOBILE_NO_DEFAULT
+        prefs[Constants.REFERRAL_KEY] = Constants.REFERRAL_DEFAULT
+        prefs[Constants.FB_ID_KEY] = Constants.FB_ID_DEFAULT
     }
 
     private fun changePassword() {
@@ -132,7 +135,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_send -> {
-
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "")
+                    type = "text/plain"
+                }
+                startActivity(sendIntent)
             }
         }
 

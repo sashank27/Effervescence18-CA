@@ -6,11 +6,18 @@
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/events_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/events_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/events_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/events_list_progress_bar"

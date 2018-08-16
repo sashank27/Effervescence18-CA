@@ -54,16 +54,15 @@ class LeaderBoardFragment : Fragment() {
 
     }
 
-    fun getLeaderboardData(){
+    fun getLeaderboardData() {
         AndroidNetworking.get(Constants.LEADERBOARD_URL)
                 .setPriority(Priority.IMMEDIATE)
+                .setTag("leaderboardRequest")
                 .build()
-                .getAsJSONArray(object : JSONArrayRequestListener{
+                .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray?) {
 
-                            populateListFromJson(response!!)
-
-
+                        populateListFromJson(response!!)
                     }
 
                     override fun onError(anError: ANError?) {
@@ -86,7 +85,7 @@ class LeaderBoardFragment : Fragment() {
         var college: String
         var points: Int
 
-        for ( i in 0 until len){
+        for (i in 0 until len) {
             entry = response.getJSONObject(i)
             name = entry.getString("name")
             points = entry.getInt("points")
@@ -110,5 +109,6 @@ class LeaderBoardFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        AndroidNetworking.cancel("leaderboardRequest")
     }
 }

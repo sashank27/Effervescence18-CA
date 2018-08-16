@@ -9,7 +9,7 @@ import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.models.EventDetails
 
 
-class MyEventsRecyclerViewAdapter(@get:JvmName("getEventsList_") private val mEventsList: ArrayList<EventDetails>)
+class MyEventsRecyclerViewAdapter(@get:JvmName("getEventsList_") private var mEventsList: ArrayList<EventDetails>)
     : RecyclerView.Adapter<MyEventsRecyclerViewAdapter.MyViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
@@ -60,5 +60,9 @@ class MyEventsRecyclerViewAdapter(@get:JvmName("getEventsList_") private val mEv
                 }
             }
         }
+    }
+
+    fun swapList(list: ArrayList<EventDetails>){
+        mEventsList = list
     }
 }

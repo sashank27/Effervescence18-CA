@@ -33,8 +33,6 @@ class ChangePasswordActivity : AppCompatActivity() {
 
         val prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
         userToken = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
-
-        AndroidNetworking.initialize(applicationContext)
     }
 
     private fun changePassword() {
