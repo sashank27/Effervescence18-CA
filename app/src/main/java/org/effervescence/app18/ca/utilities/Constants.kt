@@ -1,7 +1,7 @@
 package org.effervescence.app18.ca.utilities
 
 object Constants{
-    private const val BASE_URL = "http://192.168.43.92:8000/api/"
+    private const val BASE_URL = "http://192.168.43.191:9000/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
     const val EVENTS_LIST_URL = BASE_URL + "events/"
