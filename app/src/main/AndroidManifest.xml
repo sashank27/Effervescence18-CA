@@ -17,6 +17,7 @@
         <activity
             android:name=".activities.SplashActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,23 +26,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChangePasswordActivity" />
-
         <activity
             android:name=".activities.LoginSignupActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/LoginSignupTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.EditUserDetailsActivity"></activity>
     </application>
 
 </manifest>

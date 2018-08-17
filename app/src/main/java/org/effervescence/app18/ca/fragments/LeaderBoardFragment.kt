@@ -25,6 +25,7 @@ import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.listeners.ScrollListener
 import org.effervescence.app18.ca.models.LeaderbooardEntry
 import org.effervescence.app18.ca.utilities.Constants
+import org.effervescence.app18.ca.utilities.UserDetails
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -56,6 +57,7 @@ class LeaderBoardFragment : Fragment() {
 
     fun getLeaderboardData() {
         AndroidNetworking.get(Constants.LEADERBOARD_URL)
+                .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + UserDetails.Token)
                 .setPriority(Priority.IMMEDIATE)
                 .setTag("leaderboardRequest")
                 .build()
@@ -84,12 +86,15 @@ class LeaderBoardFragment : Fragment() {
         var name: String
         var college: String
         var points: Int
-
+        var isCurrentUser: Boolean
         for (i in 0 until len) {
             entry = response.getJSONObject(i)
             name = entry.getString("name")
             points = entry.getInt("points")
-            list.add(LeaderbooardEntry(name, points))
+            college = entry.getString("college")
+            isCurrentUser = entry.getBoolean("current_user")
+
+            list.add(LeaderbooardEntry(name, points, college, isCurrentUser))
         }
         adapter.swapList(list)
         back_view.text = "See where you stand among campus ambassadors of other colleges"

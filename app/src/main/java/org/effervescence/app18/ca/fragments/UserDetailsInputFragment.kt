@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_user_details_input.*
 
 import org.effervescence.app18.ca.R
-import java.util.*
 import com.androidnetworking.error.ANError
 import org.json.JSONObject
 import com.androidnetworking.interfaces.JSONObjectRequestListener
@@ -43,8 +43,6 @@ class UserDetailsInputFragment : Fragment() {
     }
 
     fun submit() {
-
-        userDetailsSubmitButton.isEnabled = false
         
         val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
@@ -58,7 +56,15 @@ class UserDetailsInputFragment : Fragment() {
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
         val referralCode = referralCodeEditTextView.text.toString()
-        val fbLink = "https://www.facebook.com/${fbUsernameEditTextView.text}"
+        val fbProfileIdLink = fbUsernameEditTextView.text.toString()
+
+        if(!validate(name, collegeName, mobileNo, fbProfileIdLink)){
+            progressDialog.dismiss()
+            return
+        }
+
+
+        val fbLink = "https://www.facebook.com/${fbProfileIdLink.takeLast(15)}"
 
         AndroidNetworking.post(Constants.REGULAR_USER_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
@@ -87,11 +93,62 @@ class UserDetailsInputFragment : Fragment() {
                         startActivity(Intent(context, SplashActivity::class.java))
                     }
                     override fun onError(error: ANError) {
+                        Log.v("Error", "Here")
+                        if (error.errorCode != 0) {
+
+                            val errorResponse = JSONObject(error.errorBody)
+
+                            if (errorResponse.has("phone")) {
+                                mobileNoEditTextView.error = "Not a valid mobile no"
+                            }
+
+                            if (errorResponse.has("fb_link")) {
+                                fbUsernameEditTextView.error = "The profile entered is incorrect"
+                            }
+                        }
                         progressDialog.dismiss()
-                        Toast.makeText(context, error.errorBody, Toast.LENGTH_SHORT).show()
-                        userDetailsSubmitButton.isEnabled = true
                     }
                 })
+    }
+
+    private fun validate(name: String, collegeName: String, mobileNo: String, fbProfileIdLink: String): Boolean{
+        var valid = true
+
+        if (name.isEmpty()) {
+            nameEditTextView.error = "This field should not be empty"
+            valid = false
+        } else {
+            nameEditTextView.error = null
+        }
+
+        if(collegeName.isEmpty()) {
+            collegeEditTextView.error = "This field should not be empty"
+            valid = false
+        } else {
+            collegeEditTextView.error = null
+        }
+
+        if(mobileNo.isEmpty()){
+            mobileNoEditTextView.error = "This field should not be empty"
+            valid = false
+        } else if(mobileNo.length != 10) {
+            mobileNoEditTextView.error = "Not a valid mobile no."
+            valid = false
+        } else {
+            mobileNoEditTextView.error = null
+        }
+
+        if(fbProfileIdLink.isEmpty()){
+            fbUsernameEditTextView.error = "This field should not be empty"
+            valid = false
+        } else if(fbProfileIdLink.length < 15) {
+            fbUsernameEditTextView.error = "Not a valid link"
+            valid = false
+        } else {
+            mobileNoEditTextView.error = null
+        }
+
+        return valid
     }
 
     fun showDatePickerDialog() {
@@ -103,7 +160,7 @@ class UserDetailsInputFragment : Fragment() {
             dobString = formatDate(mYear, mMonth+1, mDayOfMonth)
             dobTextView.text = dobString
         }, year, month, day)
-        datePickerDialog.datePicker.maxDate = 1262304000
+        datePickerDialog.datePicker.maxDate = 1136053800000
 
         datePickerDialog.show()
     }
