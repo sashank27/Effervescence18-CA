@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorPrimary">#2196f3</color>
+    <color name="colorPrimaryDark">#1976d2</color>
     <color name="colorAccent">#F9A825</color>
 
 
 
-    <color name="primary">#03A9F4</color>
+    <color name="primary">#1565C0</color>
     <color name="primary_dark">#0288D1</color>
     <color name="primary_darker">#0288D1</color>
     <color name="accent">#B3E5FC</color>
     <!--#FFD740-->
 
-    <color name="white">#FFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
-    <color name="baseBackground1">#E3F2FD</color>
-    <color name="baseBackground2">#BBDEFB</color>
+    <color name="baseBackground1">#e3f2fd</color>
+    <color name="baseBackground2">#bbdefb</color>
     <color name="baseBackground3">#2196F3</color>
     <color name="baseTextHeader">#0d47a1</color>
     <color name="baseTextPara">#1565c0</color>
 
-    <color name="gray0">#E1F5FE</color>
+    <color name="gray0">#e1f5fe</color>
     <color name="gray1">#B3E5FC</color>
     <color name="gray2">#4FC3F7</color>
+
+    <color name="gray_shade_1">#cfd8dc</color>
+    <color name="gray_shade_2">#b0bec5</color>
+    <color name="gray_shade_3">#90a4ae</color>
+    <color name="gray_shade_4">#78909c</color>
+    <color name="gray_shade_5">#607D8B</color>
+    <color name="gray_shade_6">#546E7A</color>
+    <color name="gray_shade_7">#455a64</color>
+    <color name="gray_shade_8">#37474f</color>
+    <color name="gray_shade_9">#263238</color>
 </resources>

@@ -80,8 +80,8 @@ class EventsFragment : Fragment() {
     }
 
     private fun buildRecyclerView() {
+        prefs[Constants.EVENTS_CACHED_KEY] = "false"
         getEventsList()
-        prefs[Constants.EVENTS_CACHED_KEY] = "true"
 
         events_list.setHasFixedSize(true)
         events_list.layoutManager = LinearLayoutManager(context)

@@ -47,8 +47,8 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
             nameTextView.text = entry.name
             srNoTextView.text = "$position."
             pointsTextView.text = "${entry.points}"
-
-            if(entry.name.trim() == UserDetails.Name.trim()){
+            emailTextView.text = entry.collegeName
+            if(entry.isCurrentUser){
                 itemView.setBackgroundResource(R.color.gray1)
             }
             if(position >= itemCount-2){
