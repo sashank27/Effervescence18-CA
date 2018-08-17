@@ -115,6 +115,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         prefs[Constants.MOBILE_NO_KEY] = Constants.MOBILE_NO_DEFAULT
         prefs[Constants.REFERRAL_KEY] = Constants.REFERRAL_DEFAULT
         prefs[Constants.FB_ID_KEY] = Constants.FB_ID_DEFAULT
+        prefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
     }
 
     private fun changePassword() {

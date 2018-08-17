@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation 'io.paperdb:paperdb:2.6'
 

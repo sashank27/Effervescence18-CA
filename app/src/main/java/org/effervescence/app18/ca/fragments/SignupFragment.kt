@@ -101,10 +101,9 @@ class SignupFragment : Fragment() {
                         progressDialog.dismiss()
                     }
                 })
-
     }
 
-    fun showLoginFragment() {
+    private fun showLoginFragment() {
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         val loginFragment = LoginFragment()
         transaction.setCustomAnimations(R.anim.push_right_out_fast, R.anim.push_right_in_fast)
