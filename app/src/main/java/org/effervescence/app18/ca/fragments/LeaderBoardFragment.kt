@@ -1,5 +1,6 @@
 package org.effervescence.app18.ca.fragments
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -23,16 +24,21 @@ import org.effervescence.app18.ca.R.id.leaderRecylcerView
 import org.effervescence.app18.ca.adapters.LeaderboardAdapter
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.listeners.ScrollListener
+import org.effervescence.app18.ca.models.LeaderboardList
 import org.effervescence.app18.ca.models.LeaderbooardEntry
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.UserDetails
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.json.JSONArray
 import org.json.JSONObject
 
 class LeaderBoardFragment : Fragment() {
+
     private var listener: OnFragmentInteractionListener? = null
     val list = ArrayList<LeaderbooardEntry>()
     lateinit var adapter: LeaderboardAdapter
+    private lateinit var mListViewModel : LeaderboardList
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,13 +51,23 @@ class LeaderBoardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getLeaderboardData()
+        mListViewModel = ViewModelProviders.of(activity!!).get(LeaderboardList::class.java)
+
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         leaderRecylcerView.layoutManager = layoutManager
         adapter = LeaderboardAdapter(context!!)
         leaderRecylcerView.adapter = adapter
         leaderRecylcerView.isNestedScrollingEnabled = true
         leaderRecylcerView.addOnScrollListener(ScrollListener(back_view))
+
+        if(mListViewModel.list == null){
+            getLeaderboardData()
+        } else {
+            adapter.swapList(mListViewModel.list!!)
+            back_view.text = "See where you stand among campus ambassadors of other colleges"
+            progressLeaderboard.visibility = View.GONE
+            leaderRecylcerView.visibility = View.VISIBLE
+        }
 
     }
 
@@ -63,7 +79,6 @@ class LeaderBoardFragment : Fragment() {
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray?) {
-
                         populateListFromJson(response!!)
                     }
 
@@ -80,26 +95,35 @@ class LeaderBoardFragment : Fragment() {
     }
 
     private fun populateListFromJson(response: JSONArray) {
-        val len = response.length()
+        doAsync {
+            val len = response.length()
 
-        var entry: JSONObject
-        var name: String
-        var college: String
-        var points: Int
-        var isCurrentUser: Boolean
-        for (i in 0 until len) {
-            entry = response.getJSONObject(i)
-            name = entry.getString("name")
-            points = entry.getInt("points")
-            college = entry.getString("college")
-            isCurrentUser = entry.getBoolean("current_user")
+            var entry: JSONObject
+            var name: String
+            var college: String
+            var points: Int
+            var isCurrentUser: Boolean
+            for (i in 0 until len) {
+                entry = response.getJSONObject(i)
+                name = entry.getString("name")
+                points = entry.getInt("points")
+                college = entry.getString("college")
+                isCurrentUser = entry.getBoolean("current_user")
 
-            list.add(LeaderbooardEntry(name, points, college, isCurrentUser))
+                list.add(LeaderbooardEntry(name, points, college, isCurrentUser))
+            }
+
+            uiThread {
+                adapter.swapList(list)
+                mListViewModel.list = list
+
+                back_view.text = "See where you stand among campus ambassadors of other colleges"
+                progressLeaderboard.visibility = View.GONE
+                leaderRecylcerView.visibility = View.VISIBLE
+            }
         }
-        adapter.swapList(list)
-        back_view.text = "See where you stand among campus ambassadors of other colleges"
-        progressLeaderboard.visibility = View.GONE
-        leaderRecylcerView.visibility = View.VISIBLE
+
+
     }
 
     override fun onAttach(context: Context) {

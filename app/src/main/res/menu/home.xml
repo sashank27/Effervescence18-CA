@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit_details"
+        android:orderInCategory="1"
+        android:title="Edit Details"
+        app:showAsAction="never" />
     <item
         android:id="@+id/change_password"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="Change Password"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/logout"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="Logout"
         app:showAsAction="never" />
 </menu>

@@ -64,7 +64,7 @@ class UserDetailsInputFragment : Fragment() {
         }
 
 
-        val fbLink = "https://www.facebook.com/${fbProfileIdLink.takeLast(15)}"
+//        val fbLink = "https://www.facebook.com/${fbProfileIdLink.takeLast(15)}"
 
         AndroidNetworking.post(Constants.REGULAR_USER_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + userToken)
@@ -74,7 +74,7 @@ class UserDetailsInputFragment : Fragment() {
                 .addBodyParameter(Constants.GENDER_KEY, getSelectedGender())
                 .addBodyParameter(Constants.MOBILE_NO_KEY, mobileNo)
                 .addBodyParameter(Constants.SUGGESTED_REFERRAL_KEY, referralCode)
-                .addBodyParameter(Constants.FB_ID_KEY, fbLink)
+                .addBodyParameter(Constants.FB_ID_KEY, fbProfileIdLink)
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
@@ -86,14 +86,12 @@ class UserDetailsInputFragment : Fragment() {
                         prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
                         prefs[Constants.GENDER_KEY] = getSelectedGender()
                         prefs[Constants.MOBILE_NO_KEY] = mobileNo
-                        prefs[Constants.FB_ID_KEY] = fbLink
 
                         activity?.finish()
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
                         startActivity(Intent(context, SplashActivity::class.java))
                     }
                     override fun onError(error: ANError) {
-                        Log.v("Error", "Here")
                         if (error.errorCode != 0) {
 
                             val errorResponse = JSONObject(error.errorBody)
@@ -102,7 +100,7 @@ class UserDetailsInputFragment : Fragment() {
                                 mobileNoEditTextView.error = "Not a valid mobile no"
                             }
 
-                            if (errorResponse.has("fb_link")) {
+                            if (errorResponse.has("fb_id")) {
                                 fbUsernameEditTextView.error = "The profile entered is incorrect"
                             }
                         }
@@ -140,9 +138,6 @@ class UserDetailsInputFragment : Fragment() {
 
         if(fbProfileIdLink.isEmpty()){
             fbUsernameEditTextView.error = "This field should not be empty"
-            valid = false
-        } else if(fbProfileIdLink.length < 15) {
-            fbUsernameEditTextView.error = "Not a valid link"
             valid = false
         } else {
             mobileNoEditTextView.error = null
