@@ -1,20 +1,13 @@
 package org.effervescence.app18.ca.adapters
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.R.color.baseBackground3
 import org.effervescence.app18.ca.models.LeaderbooardEntry
-import org.effervescence.app18.ca.utilities.UserDetails
-import org.w3c.dom.Text
-import org.w3c.dom.UserDataHandler
 
 class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<LeaderboardAdapter.LeaderBoardViewHolder>() {
 
@@ -37,7 +30,7 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
 
 
     inner class LeaderBoardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val nameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
+        val nameTextView = itemView.findViewById<TextView>(R.id.helloText)
         val srNoTextView = itemView.findViewById<TextView>(R.id.srNoTextView)
         val emailTextView = itemView.findViewById<TextView>(R.id.emailTextView)
         val pointsTextView = itemView.findViewById<TextView>(R.id.pointsTextView)
