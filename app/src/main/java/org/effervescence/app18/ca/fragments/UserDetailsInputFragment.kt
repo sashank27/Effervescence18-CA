@@ -113,40 +113,40 @@ class UserDetailsInputFragment : Fragment() {
         var valid = true
 
         if (name.isEmpty()) {
-            nameEditTextView.error = "This field should not be empty"
+            nameEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            nameEditTextView.error = null
+            nameEditTextViewLayout.error = null
         }
 
         if(collegeName.isEmpty()) {
-            collegeEditTextView.error = "This field should not be empty"
+            collegeEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            collegeEditTextView.error = null
+            collegeEditTextViewLayout.error = null
         }
 
         if(mobileNo.isEmpty()){
-            mobileNoEditTextView.error = "This field should not be empty"
+            mobileNoEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else if(mobileNo.length != 10) {
-            mobileNoEditTextView.error = "Not a valid mobile no."
+            mobileNoEditTextViewLayout.error = "Not a valid mobile no."
             valid = false
         } else {
-            mobileNoEditTextView.error = null
+            mobileNoEditTextViewLayout.error = null
         }
 
         if(fbProfileIdLink.isEmpty()){
-            fbUsernameEditTextView.error = "This field should not be empty"
+            fbUsernameEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            mobileNoEditTextView.error = null
+            mobileNoEditTextViewLayout.error = null
         }
 
         return valid
     }
 
-    fun showDatePickerDialog() {
+    private fun showDatePickerDialog() {
         val year = 1999
         val month = 0
         val day = 1

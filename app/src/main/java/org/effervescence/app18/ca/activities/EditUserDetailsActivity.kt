@@ -33,8 +33,6 @@ class EditUserDetailsActivity : AppCompatActivity() {
     }
 
     private fun putNewData() {
-
-
         val progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Saving Information..")
@@ -107,7 +105,6 @@ class EditUserDetailsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
         when(item!!.itemId) {
             android.R.id.home -> onBackPressed()
         }

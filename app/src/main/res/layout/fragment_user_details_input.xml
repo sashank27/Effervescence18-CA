@@ -40,6 +40,7 @@
                         android:textStyle="bold" />
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/nameEditTextViewLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -53,6 +54,7 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/collegeEditTextViewLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -137,12 +139,17 @@
                             android:textColor="@color/black"
                             android:textSize="24sp" />
 
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/mobileNoEditTextView"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/mobileNoEditTextViewLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Mobile"
-                            android:inputType="textNoSuggestions|textVisiblePassword|phone" />
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/mobileNoEditTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textNoSuggestions|textVisiblePassword|phone" />
+                        </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -161,11 +168,15 @@
                             android:textColor="@color/black"
                             android:textSize="24sp" />
 
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/referralCodeEditTextViewLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/referralCodeEditTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Code" />
+                            android:layout_height="wrap_content" />
+                        </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -173,22 +184,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/fbUsernameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
-                            android:text="FB-username"
+                            android:text="FB-link"
                             android:textColor="@color/black"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/fbUsernameEditTextViewLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/fbUsernameEditTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="link" />
+                            android:layout_height="wrap_content" />
+                        </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
 
                     <Button
