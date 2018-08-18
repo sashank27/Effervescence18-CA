@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,11 +99,14 @@ class UserDetailsInputFragment : Fragment() {
                             if (errorResponse.has("phone")) {
                                 mobileNoEditTextViewLayout.error = "Not a valid mobile no"
                             }
-
                             if (errorResponse.has("fb_id")) {
                                 fbIdLinkEditTextViewLayout.error = "The profile entered is incorrect"
                             }
+                            if (errorResponse.has("suggested_referral")) {
+                                referralCodeEditTextViewLayout.error = "Enter correct Referral Code"
+                            }
                         }
+                        Log.e("UserDetailsInput", error.errorBody)
                         progressDialog.dismiss()
                     }
                 })
