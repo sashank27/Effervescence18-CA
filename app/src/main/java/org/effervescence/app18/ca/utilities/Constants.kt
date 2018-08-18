@@ -1,7 +1,7 @@
 package org.effervescence.app18.ca.utilities
 
 object Constants{
-    const val BASE_URL = "https://dcf721f1.ngrok.io/api/"
+    const val BASE_URL = "https://0627a30d.ngrok.io/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
     const val EVENTS_LIST_URL = BASE_URL + "events/"

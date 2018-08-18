@@ -53,7 +53,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Username"
-                            android:inputType="textPersonName"/>
+                            android:inputType="textPersonName" />
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
                         android:layout_marginTop="24dp"
-                        android:background="#512da8"
+                        android:backgroundTint="#512da8"
                         android:padding="12dp"
                         android:text="Create Account"
                         android:textColor="@color/white"

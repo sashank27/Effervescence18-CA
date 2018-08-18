@@ -28,7 +28,7 @@ class ChangePasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_password)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         changePasswordButton.setOnClickListener { changePassword() }
         changePasswordCancelButton.setOnClickListener { finish() }

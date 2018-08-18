@@ -5,7 +5,6 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +55,7 @@ class UserDetailsInputFragment : Fragment() {
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
         val referralCode = referralCodeEditTextView.text.toString()
-        val fbProfileIdLink = fbUsernameEditTextView.text.toString()
+        val fbProfileIdLink = fbIdLinkEditTextView.text.toString()
 
         if(!validate(name, collegeName, mobileNo, fbProfileIdLink)){
             progressDialog.dismiss()
@@ -97,11 +96,11 @@ class UserDetailsInputFragment : Fragment() {
                             val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("phone")) {
-                                mobileNoEditTextView.error = "Not a valid mobile no"
+                                mobileNoEditTextViewLayout.error = "Not a valid mobile no"
                             }
 
                             if (errorResponse.has("fb_id")) {
-                                fbUsernameEditTextView.error = "The profile entered is incorrect"
+                                fbIdLinkEditTextViewLayout.error = "The profile entered is incorrect"
                             }
                         }
                         progressDialog.dismiss()
@@ -137,7 +136,7 @@ class UserDetailsInputFragment : Fragment() {
         }
 
         if(fbProfileIdLink.isEmpty()){
-            fbUsernameEditTextViewLayout.error = "This field should not be empty"
+            fbIdLinkEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
             mobileNoEditTextViewLayout.error = null

@@ -107,7 +107,7 @@
                             android:textSize="20sp" />
 
                         <android.support.design.widget.TextInputEditText
-                            android:id="@+id/fbUsernameEditTextView"
+                            android:id="@+id/fbIdLinkEditTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="link" />
