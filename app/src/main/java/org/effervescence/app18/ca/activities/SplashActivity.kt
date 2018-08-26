@@ -20,6 +20,7 @@ import org.jetbrains.anko.startActivity
 import com.androidnetworking.error.ANError
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.cloudinary.android.MediaManager
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.effervescence.app18.ca.R

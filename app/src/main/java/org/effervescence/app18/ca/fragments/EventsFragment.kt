@@ -15,19 +15,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import kotlinx.android.synthetic.main.fragment_events.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.adapters.MyEventsRecyclerViewAdapter
 import org.json.JSONArray
 import org.json.JSONObject
 import io.paperdb.Paper
-import okhttp3.*
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
 import org.effervescence.app18.ca.utilities.*
@@ -35,28 +37,27 @@ import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import kotlin.collections.ArrayList
 
 class EventsFragment : Fragment() {
 
-    private var listener: OnFragmentInteractionListener? = null
-    private val IMAGE_PICKER_REQUEST_CODE = 1
-    private var pickedEventId = -1
-    private lateinit var prefs: SharedPreferences
+    companion object {
+        const val IMAGE_PICKER_REQUEST_CODE = 1
+    }
 
+    private var mPickedEventId = -1
+    private lateinit var mPrefs: SharedPreferences
+    private lateinit var mImageUploadRequestId: String
+    private lateinit var mProgressDialog: ProgressDialog
     private var mEventDetailsList = ArrayList<EventDetails>()
+    private var listener: OnFragmentInteractionListener? = null
     var listAdapter: MyEventsRecyclerViewAdapter = MyEventsRecyclerViewAdapter(mEventDetailsList)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        prefs = MyPreferences.customPrefs(activity!!.applicationContext, Constants.MY_SHARED_PREFERENCE)
-
+        mPrefs = MyPreferences.customPrefs(activity!!.applicationContext, Constants.MY_SHARED_PREFERENCE)
+        mProgressDialog = ProgressDialog(context)
         if (listener != null) {
             listener!!.setTitleTo("Events")
         }
@@ -70,11 +71,10 @@ class EventsFragment : Fragment() {
 
         listAdapter.setOnClickListener(object : MyEventsRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClicked(position: Int) {
-                pickedEventId = position + 1
+                mPickedEventId = position + 1
                 openImagePicker()
             }
         })
-
         events_swipe_refresh.setOnRefreshListener { updateEventsListCache() }
     }
 
@@ -83,7 +83,7 @@ class EventsFragment : Fragment() {
             Paper.book().delete(Constants.EVENTS_CACHED_KEY)
         }
         mEventDetailsList.clear()
-        prefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
+        mPrefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
         getEventsList()
     }
 
@@ -97,7 +97,7 @@ class EventsFragment : Fragment() {
 
     private fun getEventsList() {
         var i = 0
-        if (prefs[Constants.EVENTS_CACHED_KEY, Constants.EVENTS_CACHED_DEFAULT] == "true") {
+        if (mPrefs[Constants.EVENTS_CACHED_KEY, Constants.EVENTS_CACHED_DEFAULT] == "true") {
             doAsync {
                 mEventDetailsList = ArrayList(Paper.book().read<ArrayList<EventDetails>>(Constants.EVENTS_CACHED_KEY))
                 uiThread {
@@ -107,7 +107,7 @@ class EventsFragment : Fragment() {
                 }
             }
         } else {
-            prefs[Constants.EVENTS_CACHED_KEY] = "true"
+            mPrefs[Constants.EVENTS_CACHED_KEY] = "true"
             AndroidNetworking.get(Constants.EVENTS_LIST_URL)
                     .setPriority(Priority.IMMEDIATE)
                     .build()
@@ -143,8 +143,8 @@ class EventsFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val title = getTitleFromUri(data.data)
-            uploadImageWithURI(compressImage(context, data.data, title))
-//            uploadImageWithURI(data.data)
+//            uploadImageWithURI(compressImage(context, data.data, title))
+            uploadImageWithURI(data.data)
         }
     }
 
@@ -163,42 +163,55 @@ class EventsFragment : Fragment() {
     }
 
     private fun uploadImageWithURI(imageUri: Uri?) {
-
-        val progressDialog = ProgressDialog(context)
-        progressDialog.setMessage("Uploading...")
-        progressDialog.setCanceledOnTouchOutside(false)
-        progressDialog.isIndeterminate = true
-        progressDialog.show()
+        mProgressDialog.setMessage("Uploading...")
+        mProgressDialog.setCanceledOnTouchOutside(false)
+        mProgressDialog.isIndeterminate = true
+        mProgressDialog.show()
 
         if (imageUri != null) {
             val file = File(getRealPathFromURI(imageUri))
-            val userToken = Constants.TOKEN_STRING + prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
+            val userToken = Constants.TOKEN_STRING + mPrefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
 
-            val eventIdPart = RequestBody.create(MultipartBody.FORM, pickedEventId.toString())
-            val imagePart = RequestBody.create(
-                    MediaType.parse(activity!!.contentResolver.getType(imageUri)), file)
+            mImageUploadRequestId = MediaManager.get()
+                    .upload(imageUri)
+                    .unsigned("i5nefzvx")
+                    .callback(object : UploadCallback {
+                        override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
+                            if (requestId.equals(mImageUploadRequestId)) {
+                                mProgressDialog.dismiss()
+                                Toast.makeText(context, "Upload Successful :)", Toast.LENGTH_SHORT).show()
+                                upload_progress_bar.visibility = View.GONE
+                            }
+                        }
 
-            val retrofitBuilder = Retrofit.Builder()
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                        override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
+                            upload_progress_bar.visibility = View.VISIBLE
+                            upload_progress_bar.progress = ((bytes/totalBytes)*100).toInt()
+                        }
 
-            val retrofit = retrofitBuilder.build()
-            val client = retrofit.create(ImageUploadClient::class.java)
-            val call: Call<ResponseBody> = client.uploadImage(userToken, eventIdPart, imagePart)
-            val callback: Callback<ResponseBody> = object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                    Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show()
-                    progressDialog.dismiss()
-                }
+                        override fun onReschedule(requestId: String?, error: ErrorInfo?) {
+                            //NOP
+                        }
 
-                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                    Toast.makeText(context, "Error :(", Toast.LENGTH_LONG).show()
-                    Log.e("ImageUpload", t.toString())
-                }
-            }
-            call.enqueue(callback)
+                        override fun onError(requestId: String?, error: ErrorInfo?) {
+                            if (requestId.equals(mImageUploadRequestId)) {
+                                mProgressDialog.dismiss()
+                                Toast.makeText(context, "Error happened :(", Toast.LENGTH_SHORT).show()
+                                Log.e("Image Upload Error", error.toString())
+                            }
+
+                        }
+
+                        override fun onStart(requestId: String?) {
+                            if (requestId == mImageUploadRequestId) {
+                                mProgressDialog.show()
+                            }
+                        }
+
+                    })
+                    .dispatch()
         } else {
-            progressDialog.dismiss()
+            mProgressDialog.dismiss()
             Toast.makeText(context, "Image no more on storage", Toast.LENGTH_SHORT).show()
         }
     }

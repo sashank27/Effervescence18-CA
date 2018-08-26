@@ -49,7 +49,7 @@
                     android:layout_marginEnd="4dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
-                    android:text="The CR system of Effervescence, IIIT Allahabad plays an integral part in its growth and promotions. It serves as a platform for binding Effervescence with the students across the country as well as imbibing their culture in our festival. It provides an oppurtunity to college students across the nation to stand out from multitude of people by being our voice in their respective colleges and thereby significantly bridging the gap between the two. So do register by associating with us as College Ambassadors and thereby moulding this edition of Effervescence bigger and glorious than ever before."
+                    android:text="The CA system of Effervescence, IIIT Allahabad plays an integral part in its growth and promotions. It serves as a platform for binding Effervescence with the students across the country as well as imbibing their culture in our festival. It provides an oppurtunity to college students across the nation to stand out from multitude of people by being our voice in their respective colleges and thereby significantly bridging the gap between the two. So do register by associating with us as College Ambassadors and thereby moulding this edition of Effervescence bigger and glorious than ever before."
                     android:textAlignment="center"
                     android:textColor="@color/baseTextPara"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.cloudinary.android.MediaManager
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.LoginFragment
 import org.effervescence.app18.ca.fragments.SignupFragment
