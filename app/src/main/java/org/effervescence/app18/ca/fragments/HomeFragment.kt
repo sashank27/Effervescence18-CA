@@ -40,26 +40,35 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userNameTextView.text = UserDetails.userName
-        nameTextView.text = "Hello, ${UserDetails.Name}"
-        collegeNameTextView.text = UserDetails.collegeName
-        mobileNoTextView.text = "Mobile No : ${UserDetails.mobileNo}"
+//        nameTextView.text = "Hello, ${UserDetails.Name}"
+        collegeNameTextView.text = "Glad to have our campus ambassador in ${UserDetails.collegeName} :)"
+//        mobileNoTextView.text = "Mobile No : ${UserDetails.mobileNo}"
 
-        if(UserDetails.isFirstLaunch) {
+        if (UserDetails.isFirstLaunch) {
             loadUserDetails()
         } else {
             displayReportCard()
         }
 
-        shareAppCardView.setOnClickListener {  val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "")
-            type = "text/plain"
+        shareAppCardView.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "")
+                type = "text/plain"
+            }
+            startActivity(sendIntent)
         }
-            startActivity(sendIntent) }
     }
 
     private fun displayReportCard() {
-        pointsTextView.text = UserDetails.points.toString()
+        pointsTextView.text = "Points: ${UserDetails.points}"
+        val rank = UserDetails.rank.toString()
+        rankTextView.textSize = when (rank.length) {
+            4 -> 25f
+            3 -> 80f
+            2 -> 120f
+            else -> 180f
+        }
         rankTextView.text = UserDetails.rank.toString()
     }
 
@@ -88,10 +97,12 @@ class HomeFragment : Fragment() {
                         UserDetails.isFirstLaunch = false
                         displayReportCard()
                     }
+
                     override fun onError(error: ANError) {
 
                     }
-    })}
+                })
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

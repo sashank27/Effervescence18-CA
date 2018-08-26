@@ -33,7 +33,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="12dp"
                         android:text="Please enter required Information"
                         android:textColor="@color/black"
                         android:textSize="22sp"
@@ -50,7 +50,8 @@
                             android:id="@+id/nameEditTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name" />
+                            android:hint="Name"
+                            android:inputType="textCapWords" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -67,152 +68,123 @@
                             android:hint="College" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Gender"
-                        android:textColor="@color/black"
-                        android:textSize="24sp" />
-
-                    <RadioGroup
-                        android:id="@+id/genderRadioGroup"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
-                        <android.support.v7.widget.AppCompatRadioButton
-                            android:id="@+id/maleRadioButton"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:checked="true"
-                            android:text="@string/male_radio_button" />
+                            android:text="Gender"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
 
-                        <android.support.v7.widget.AppCompatRadioButton
-                            android:id="@+id/femaleRadioButton"
+                        <RadioGroup
+                            android:id="@+id/genderRadioGroup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/female_radio_button" />
-                    </RadioGroup>
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.AppCompatRadioButton
+                                android:id="@+id/maleRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:checked="true"
+                                android:text="@string/male_radio_button" />
+
+                            <android.support.v7.widget.AppCompatRadioButton
+                                android:id="@+id/femaleRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/female_radio_button" />
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/birthdayTextView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
                             android:text="Date of Birth"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
-
-                        <TextView
-                            android:id="@+id/dobTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp"
-                            android:text="yyyy-mm-dd"
-                            android:textSize="22sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/mobileTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:text="Mobile"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
-
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/mobileNoEditTextViewLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/mobileNoEditTextView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textNoSuggestions|textVisiblePassword|phone" />
-                        </android.support.design.widget.TextInputLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/referralCodeTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:text="Referral"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
-
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/referralCodeEditTextViewLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/referralCodeEditTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                        </android.support.design.widget.TextInputLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/fbUsernameTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:text="FB-link"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
 
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/fbUsernameEditTextViewLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/dobTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="yyyy-mm-dd"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/mobileNoEditTextViewLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp">
 
                         <android.support.design.widget.TextInputEditText
-                            android:id="@+id/fbUsernameEditTextView"
+                            android:id="@+id/mobileNoEditTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                        </android.support.design.widget.TextInputLayout>
-                    </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:hint="Mobile No."
+                            android:inputType="phone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/referralCodeEditTextViewLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/referralCodeEditTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Referral Code" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/fbIdLinkEditTextViewLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/fbIdLinkEditTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Facebook ID link" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <Button
                         android:id="@+id/userDetailsSubmitButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:background="#512da8"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="#512da8"
                         android:text="Submit"
                         android:textAllCaps="false"
                         android:textColor="@color/white"

@@ -1,6 +1,7 @@
 package org.effervescence.app18.ca
 
 import android.app.Application
+import com.cloudinary.android.MediaManager
 import timber.log.Timber
 
 class EffervescenceCA : Application() {
@@ -8,5 +9,9 @@ class EffervescenceCA : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+
+        val config = HashMap<String, String>()
+        config["cloud_name"] = "dxxconnay"
+        MediaManager.init(this, config)
     }
 }

@@ -56,7 +56,7 @@ class UserDetailsInputFragment : Fragment() {
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
         val referralCode = referralCodeEditTextView.text.toString()
-        val fbProfileIdLink = fbUsernameEditTextView.text.toString()
+        val fbProfileIdLink = fbIdLinkEditTextView.text.toString()
 
         if(!validate(name, collegeName, mobileNo, fbProfileIdLink)){
             progressDialog.dismiss()
@@ -97,13 +97,16 @@ class UserDetailsInputFragment : Fragment() {
                             val errorResponse = JSONObject(error.errorBody)
 
                             if (errorResponse.has("phone")) {
-                                mobileNoEditTextView.error = "Not a valid mobile no"
+                                mobileNoEditTextViewLayout.error = "Not a valid mobile no"
                             }
-
                             if (errorResponse.has("fb_id")) {
-                                fbUsernameEditTextView.error = "The profile entered is incorrect"
+                                fbIdLinkEditTextViewLayout.error = "The profile entered is incorrect"
+                            }
+                            if (errorResponse.has("suggested_referral")) {
+                                referralCodeEditTextViewLayout.error = "Enter correct Referral Code"
                             }
                         }
+                        Log.e("UserDetailsInput", error.errorBody)
                         progressDialog.dismiss()
                     }
                 })
@@ -137,7 +140,7 @@ class UserDetailsInputFragment : Fragment() {
         }
 
         if(fbProfileIdLink.isEmpty()){
-            fbUsernameEditTextViewLayout.error = "This field should not be empty"
+            fbIdLinkEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
             mobileNoEditTextViewLayout.error = null
