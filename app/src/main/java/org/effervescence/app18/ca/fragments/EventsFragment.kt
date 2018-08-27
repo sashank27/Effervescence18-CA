@@ -1,7 +1,6 @@
 package org.effervescence.app18.ca.fragments
 
 import android.app.Activity.RESULT_OK
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -30,12 +29,15 @@ import org.effervescence.app18.ca.adapters.MyEventsRecyclerViewAdapter
 import org.json.JSONArray
 import org.json.JSONObject
 import io.paperdb.Paper
+import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.app_bar_home.*
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
 import org.effervescence.app18.ca.utilities.*
 import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.File
 import kotlin.collections.ArrayList
@@ -49,7 +51,6 @@ class EventsFragment : Fragment() {
     private var mPickedEventId = -1
     private lateinit var mPrefs: SharedPreferences
     private lateinit var mImageUploadRequestId: String
-    private lateinit var mProgressDialog: ProgressDialog
     private var mEventDetailsList = ArrayList<EventDetails>()
     private var listener: OnFragmentInteractionListener? = null
     var listAdapter: MyEventsRecyclerViewAdapter = MyEventsRecyclerViewAdapter(mEventDetailsList)
@@ -57,7 +58,6 @@ class EventsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mPrefs = MyPreferences.customPrefs(activity!!.applicationContext, Constants.MY_SHARED_PREFERENCE)
-        mProgressDialog = ProgressDialog(context)
         if (listener != null) {
             listener!!.setTitleTo("Events")
         }
@@ -82,7 +82,6 @@ class EventsFragment : Fragment() {
         doAsync {
             Paper.book().delete(Constants.EVENTS_CACHED_KEY)
         }
-        mEventDetailsList.clear()
         mPrefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
         getEventsList()
     }
@@ -103,7 +102,7 @@ class EventsFragment : Fragment() {
                 uiThread {
                     listAdapter.swapList(mEventDetailsList)
                     listAdapter.notifyDataSetChanged()
-                    events_list_progress_bar.visibility = View.GONE
+                    events_list_progress_bar?.visibility = View.GONE
                 }
             }
         } else {
@@ -114,12 +113,13 @@ class EventsFragment : Fragment() {
                     .getAsJSONArray(object : JSONArrayRequestListener {
                         override fun onResponse(response: JSONArray) {
                             if (response.length() > 0) {
+                                mEventDetailsList.clear()
                                 while (response.length() > i) {
                                     mEventDetailsList.add(createEventDetailsObject(response.getJSONObject(i++)))
                                 }
                             }
                             listAdapter.notifyDataSetChanged()
-                            events_list_progress_bar.visibility = View.GONE
+                            events_list_progress_bar?.visibility = View.GONE
                             doAsync {
                                 Paper.book().write(Constants.EVENTS_CACHED_KEY, mEventDetailsList)
                                 uiThread {
@@ -163,10 +163,6 @@ class EventsFragment : Fragment() {
     }
 
     private fun uploadImageWithURI(imageUri: Uri?) {
-        mProgressDialog.setMessage("Uploading...")
-        mProgressDialog.setCanceledOnTouchOutside(false)
-        mProgressDialog.isIndeterminate = true
-        mProgressDialog.show()
 
         if (imageUri != null) {
             val file = File(getRealPathFromURI(imageUri))
@@ -177,41 +173,35 @@ class EventsFragment : Fragment() {
                     .unsigned("i5nefzvx")
                     .callback(object : UploadCallback {
                         override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
-                            if (requestId.equals(mImageUploadRequestId)) {
-                                mProgressDialog.dismiss()
-                                Toast.makeText(context, "Upload Successful :)", Toast.LENGTH_SHORT).show()
-                                upload_progress_bar.visibility = View.GONE
-                            }
+                            Toast.makeText(activity!!.applicationContext, "Upload Successful :)",
+                                    Toast.LENGTH_SHORT).show()
+                            upload_progress_bar.visibility = View.GONE
+                            upload_progress_bar.progress = 0
                         }
 
                         override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
-                            upload_progress_bar.visibility = View.VISIBLE
-                            upload_progress_bar.progress = ((bytes/totalBytes)*100).toInt()
+                            val pro: Double = (bytes.toDouble() / totalBytes.toDouble()) * 100
+                            clearFindViewByIdCache()
+                            upload_progress_bar?.progress = pro.toInt()
                         }
 
                         override fun onReschedule(requestId: String?, error: ErrorInfo?) {
-                            //NOP
+                            //Not Required
                         }
 
                         override fun onError(requestId: String?, error: ErrorInfo?) {
-                            if (requestId.equals(mImageUploadRequestId)) {
-                                mProgressDialog.dismiss()
-                                Toast.makeText(context, "Error happened :(", Toast.LENGTH_SHORT).show()
-                                Log.e("Image Upload Error", error.toString())
-                            }
-
+//                                mProgressDialog.dismiss()
+                            Toast.makeText(context, "Error happened :(", Toast.LENGTH_SHORT).show()
+                            Log.e("Image Upload Error", error.toString())
                         }
 
                         override fun onStart(requestId: String?) {
-                            if (requestId == mImageUploadRequestId) {
-                                mProgressDialog.show()
-                            }
+                            upload_progress_bar.visibility = View.VISIBLE
                         }
 
                     })
                     .dispatch()
         } else {
-            mProgressDialog.dismiss()
             Toast.makeText(context, "Image no more on storage", Toast.LENGTH_SHORT).show()
         }
     }

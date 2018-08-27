@@ -115,14 +115,14 @@ class LoginFragment : Fragment() {
         var valid = true
 
         if (username.isEmpty() || username.length < 3) {
-            inputUsernameLoginLayout.error = "at least 3 characters"
+            inputUsernameLoginLayout.error = "Username must be of at least 3 characters"
             valid = false
         } else {
             inputUsernameLoginLayout.error = null
         }
 
         if (password.isEmpty() || password.length < 8 ) {
-            inputPasswordLoginLayout.error = "Password must be at least 8 characters"
+            inputPasswordLoginLayout.error = "Password must be of at least 8 characters"
             valid = false
         } else {
             inputPasswordLoginLayout.error = null
@@ -140,7 +140,7 @@ class LoginFragment : Fragment() {
     }
 
     fun onLoginFailed() {
-        activity?.toast("Login Failed")
+        Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
         btnLogin.isEnabled = true
     }
 }
