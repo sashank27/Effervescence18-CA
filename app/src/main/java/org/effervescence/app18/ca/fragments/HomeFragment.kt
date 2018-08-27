@@ -7,16 +7,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_user_details_input.*
 
 import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.activities.EditUserDetailsActivity
-import org.effervescence.app18.ca.activities.SplashActivity
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
@@ -40,9 +36,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userNameTextView.text = UserDetails.userName
-//        nameTextView.text = "Hello, ${UserDetails.Name}"
         collegeNameTextView.text = "Glad to have our campus ambassador in ${UserDetails.collegeName} :)"
-//        mobileNoTextView.text = "Mobile No : ${UserDetails.mobileNo}"
 
         if (UserDetails.isFirstLaunch) {
             loadUserDetails()
@@ -61,15 +55,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun displayReportCard() {
-        pointsTextView.text = "Points: ${UserDetails.points}"
+        pointsTextView?.text = "Points: ${UserDetails.points}"
         val rank = UserDetails.rank.toString()
-        rankTextView.textSize = when (rank.length) {
+        rank_text_view?.textSize = when (rank.length) {
             4 -> 25f
             3 -> 80f
             2 -> 120f
             else -> 180f
         }
-        rankTextView.text = UserDetails.rank.toString()
+        rank_text_view?.text = UserDetails.rank.toString()
+        rank_loading_spin_kit?.visibility = View.GONE
+        rank_inferring_text_view?.visibility = View.GONE
+        rank_inferring_text_view?.text = "Your Rank"
     }
 
     private fun loadUserDetails() {
