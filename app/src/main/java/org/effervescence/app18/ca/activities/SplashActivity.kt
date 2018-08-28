@@ -119,6 +119,7 @@ class SplashActivity : AppCompatActivity() {
         UserDetails.userName = prefs[Constants.KEY_USERNAME, Constants.USERNAME_DEFAULT]
         UserDetails.collegeName = prefs[Constants.COLLEGE_NAME_KEY, Constants.COLLEGE_NAME_DEFAULT]
         UserDetails.mobileNo = prefs[Constants.MOBILE_NO_KEY, Constants.MOBILE_NO_DEFAULT]
+        UserDetails.facebookId = prefs[Constants.FB_ID_KEY, Constants.FB_ID_DEFAULT]
         startActivity<HomeActivity>()
         finish()
     }

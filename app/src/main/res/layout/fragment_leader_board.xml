@@ -36,9 +36,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
+
+
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progressLeaderboard"
-        style="?android:attr/progressBarStyle"
+        style="@style/SpinKitView.ChasingDots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -47,6 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_view" />
+        app:layout_constraintTop_toBottomOf="@+id/back_view"
+        app:SpinKit_Color="@color/colorPrimary" />
 
 </android.support.constraint.ConstraintLayout>

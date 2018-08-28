@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
@@ -20,6 +21,7 @@ import org.json.JSONObject
 
 class EditUserDetailsActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_user_details)
@@ -28,7 +30,7 @@ class EditUserDetailsActivity : AppCompatActivity() {
         nameEditTextView.setText(UserDetails.Name)
         collegeEditTextView.setText(UserDetails.collegeName)
         mobileNoEditTextView.setText(UserDetails.mobileNo)
-
+        fbIdLinkEditTextView.setText(UserDetails.facebookId)
         userDetailsSubmitButton.setOnClickListener { putNewData() }
     }
 
@@ -44,9 +46,16 @@ class EditUserDetailsActivity : AppCompatActivity() {
         val name = nameEditTextView.text.toString()
         val collegeName = collegeEditTextView.text.toString()
         val mobileNo = mobileNoEditTextView.text.toString()
+        val facebook = fbIdLinkEditTextView.text.toString()
 
-        if(!validate(name, collegeName, mobileNo)){
+        if(!validate(name, collegeName, mobileNo, facebook)){
             progressDialog.dismiss()
+            return
+        }
+
+        if(name == UserDetails.Name && collegeName == UserDetails.collegeName
+            && mobileNo == UserDetails.mobileNo && facebook == UserDetails.facebookId){
+            finish()
             return
         }
 
@@ -55,6 +64,7 @@ class EditUserDetailsActivity : AppCompatActivity() {
                 .addBodyParameter(Constants.NAME_KEY, name)
                 .addBodyParameter(Constants.COLLEGE_NAME_KEY, collegeName)
                 .addBodyParameter(Constants.MOBILE_NO_KEY, mobileNo)
+                .addBodyParameter(Constants.FB_ID_KEY, facebook)
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
@@ -64,42 +74,62 @@ class EditUserDetailsActivity : AppCompatActivity() {
                         prefs[Constants.NAME_KEY] = name
                         prefs[Constants.COLLEGE_NAME_KEY] = collegeName
                         prefs[Constants.MOBILE_NO_KEY] = mobileNo
+                        prefs[Constants.FB_ID_KEY] = facebook
 
                         finishAffinity()
                         Toast.makeText(this@EditUserDetailsActivity, "Details updated successfully", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this@EditUserDetailsActivity, SplashActivity::class.java))
                     }
                     override fun onError(error: ANError) {
+                        if (error.errorCode != 0) {
+
+                            val errorResponse = JSONObject(error.errorBody)
+
+                            if (errorResponse.has("phone")) {
+                                mobileNoEditTextView.error = "Not a valid mobile no"
+                            }
+                            if (errorResponse.has("fb_id")) {
+                                fbIdLinkEditTextViewLayout.error = "The profile entered is incorrect"
+                            }
+                        }
+                        Log.e("UserDetailsInput", error.errorBody)
                         progressDialog.dismiss()
                         Toast.makeText(this@EditUserDetailsActivity, error.errorBody, Toast.LENGTH_SHORT).show()
                     }
                 })
     }
 
-    private fun validate(name: String, collegeName: String, mobileNo: String): Boolean {
+    private fun validate(name: String, collegeName: String, mobileNo: String, facebook: String): Boolean {
         var valid = true
         if (name.isEmpty()) {
-            nameEditTextView.error = "This field should not be empty"
+            nameEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            nameEditTextView.error = null
+            nameEditTextViewLayout.error = null
         }
 
         if(collegeName.isEmpty()) {
-            collegeEditTextView.error = "This field should not be empty"
+            collegeEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            collegeEditTextView.error = null
+            collegeEditTextViewLayout.error = null
         }
 
         if(mobileNo.isEmpty()){
-            mobileNoEditTextView.error = "This field should not be empty"
+            mobileNoEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else if(mobileNo.length != 10) {
-            mobileNoEditTextView.error = "Not a valid mobile no."
+            mobileNoEditTextViewLayout.error = "Not a valid mobile no."
             valid = false
         } else {
-            mobileNoEditTextView.error = null
+            mobileNoEditTextViewLayout.error = null
+        }
+
+        if(facebook.isEmpty()){
+            fbIdLinkEditTextViewLayout.error = "This field should not be empty"
+            valid = false
+        } else {
+            fbIdLinkEditTextViewLayout.error = null
         }
         return valid
     }
