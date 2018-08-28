@@ -1,6 +1,7 @@
 package org.effervescence.app18.ca.fragments
 
 import android.app.Activity.RESULT_OK
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,7 +15,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -29,17 +29,13 @@ import org.effervescence.app18.ca.adapters.MyEventsRecyclerViewAdapter
 import org.json.JSONArray
 import org.json.JSONObject
 import io.paperdb.Paper
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.app_bar_home.*
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
 import org.effervescence.app18.ca.utilities.*
 import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import java.io.File
 import kotlin.collections.ArrayList
 
 class EventsFragment : Fragment() {
@@ -143,46 +139,38 @@ class EventsFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val title = getTitleFromUri(data.data)
-//            uploadImageWithURI(compressImage(context, data.data, title))
-            uploadImageWithURI(data.data)
+            uploadImageWithURI(compressImage(context, data.data, title), title)
         }
     }
 
-    private fun getRealPathFromURI(contentURI: Uri?): String {
-        val result: String
-        val cursor = activity!!.contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            result = contentURI!!.path
-        } else {
-            cursor.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            result = cursor.getString(idx)
-            cursor.close()
-        }
-        return result
-    }
+    private fun uploadImageWithURI(imageUri: Uri?, title: String) {
 
-    private fun uploadImageWithURI(imageUri: Uri?) {
+        val progressDialog = ProgressDialog(context)
+        progressDialog.isIndeterminate = false
+        progressDialog.setMessage("0% Uploaded")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         if (imageUri != null) {
-            val file = File(getRealPathFromURI(imageUri))
-            val userToken = Constants.TOKEN_STRING + mPrefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
+
+            val options = HashMap<String, String>()
+            options["public_id"] = "${UserDetails.userName}/$title"
+            options["tags"] = mPickedEventId.toString()
 
             mImageUploadRequestId = MediaManager.get()
-                    .upload(imageUri)
+                    .upload(imageUri).options(options)
                     .unsigned("i5nefzvx")
                     .callback(object : UploadCallback {
+
                         override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
                             Toast.makeText(activity!!.applicationContext, "Upload Successful :)",
                                     Toast.LENGTH_SHORT).show()
-                            upload_progress_bar.visibility = View.GONE
-                            upload_progress_bar.progress = 0
+                            progressDialog.dismiss()
                         }
 
                         override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
                             val pro: Double = (bytes.toDouble() / totalBytes.toDouble()) * 100
-                            clearFindViewByIdCache()
-                            upload_progress_bar?.progress = pro.toInt()
+                            progressDialog.progress = pro.toInt()
+                            progressDialog.setMessage("${pro.toInt()}% Uploaded")
                         }
 
                         override fun onReschedule(requestId: String?, error: ErrorInfo?) {
@@ -196,7 +184,7 @@ class EventsFragment : Fragment() {
                         }
 
                         override fun onStart(requestId: String?) {
-                            upload_progress_bar.visibility = View.VISIBLE
+                            progressDialog.show()
                         }
 
                     })

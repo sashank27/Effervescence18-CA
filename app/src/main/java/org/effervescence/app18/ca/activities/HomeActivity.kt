@@ -67,7 +67,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else if(currentPage != 1) {
+        } else if (currentPage != 1) {
             fragmentClass = HomeFragment::class.java
             try {
                 fragment = fragmentClass!!.newInstance() as Fragment
@@ -81,8 +81,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
 
             currentPage = 1
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
     }
@@ -94,7 +93,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.logout -> {
                 resetSharedPreference()
                 finish()
@@ -154,10 +153,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_send -> {
+                val referralCode = UserDetails.referralCode
                 val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, "")
                     type = "text/plain"
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "Hey, use my referral code $referralCode " +
+                            "while registering for Effervescence-CA app to get extra 10 points. Download now: ")
                 }
                 startActivity(sendIntent)
             }
@@ -174,7 +175,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             currentPage = selectedPage
 
 
-            if(fragmentClass!= null){
+            if (fragmentClass != null) {
                 try {
                     fragment = fragmentClass!!.newInstance() as Fragment
                 } catch (e: Exception) {
@@ -185,8 +186,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .setCustomAnimations(startAnimation, endAnimation)
                         .replace(R.id.mainContentSpace, fragment)
                         .commit()
-            }
-            else{
+            } else {
                 fragmentClass = currentFragmentClass
             }
 
