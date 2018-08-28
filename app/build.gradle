@@ -30,10 +30,16 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.1'
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
-
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation 'io.paperdb:paperdb:2.6'
+    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.24.0'
+
     implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'

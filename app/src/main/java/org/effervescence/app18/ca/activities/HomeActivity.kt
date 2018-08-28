@@ -1,5 +1,6 @@
 package org.effervescence.app18.ca.activities
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,30 +12,34 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import com.cloudinary.android.MediaManager
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
-import kotlinx.android.synthetic.main.nav_header_home.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.fragments.AboutFragment
+import org.effervescence.app18.ca.fragments.EventsFragment
 import org.effervescence.app18.ca.fragments.HomeFragment
+import org.effervescence.app18.ca.fragments.LeaderBoardFragment
+import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
+import org.effervescence.app18.ca.utilities.Constants
+import org.effervescence.app18.ca.utilities.MyPreferences
+import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.effervescence.app18.ca.utilities.UserDetails
+import org.jetbrains.anko.startActivity
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+
 
     private var fragment: Fragment? = null
     private var fragmentClass: Class<*>? = null
     private var currentPage = 1
-
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -44,7 +49,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.userNameNav).text = UserDetails.Name
 
-
         fragmentClass = HomeFragment::class.java
         try {
             fragment = fragmentClass!!.newInstance() as Fragment
@@ -52,13 +56,33 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             e.printStackTrace()
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.mainContentSpace, fragment).commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainContentSpace, fragment).commit()
+
+        nav_view.setCheckedItem(R.id.nav_home)
+
+        prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
     }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        } else if(currentPage != 1) {
+            fragmentClass = HomeFragment::class.java
+            try {
+                fragment = fragmentClass!!.newInstance() as Fragment
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.push_right_out, R.anim.push_right_in)
+                    .replace(R.id.mainContentSpace, fragment)
+                    .commit()
+
+            currentPage = 1
+        }
+        else {
             super.onBackPressed()
         }
     }
@@ -70,18 +94,38 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        when(item.itemId) {
+            R.id.logout -> {
+                resetSharedPreference()
+                finish()
+                return true
+            }
+            R.id.change_password -> changePassword()
+
+            R.id.edit_details -> startActivity(Intent(this, EditUserDetailsActivity::class.java))
         }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun resetSharedPreference() {
+        prefs[Constants.KEY_TOKEN] = "0"
+        prefs[Constants.NAME_KEY] = Constants.NAME_DEFAULT
+        prefs[Constants.COLLEGE_NAME_KEY] = Constants.COLLEGE_NAME_DEFAULT
+        prefs[Constants.GENDER_KEY] = Constants.GENDER_DEFAULT
+        prefs[Constants.DATE_OF_BIRTH_KEY] = Constants.DATE_OF_BIRTH_DEFAULT
+        prefs[Constants.MOBILE_NO_KEY] = Constants.MOBILE_NO_DEFAULT
+        prefs[Constants.REFERRAL_KEY] = Constants.REFERRAL_DEFAULT
+        prefs[Constants.FB_ID_KEY] = Constants.FB_ID_DEFAULT
+        prefs[Constants.EVENTS_CACHED_KEY] = Constants.EVENTS_CACHED_DEFAULT
+    }
+
+    private fun changePassword() {
+        startActivity<ChangePasswordActivity>()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        var currentFragmentClass = fragmentClass
+        val currentFragmentClass = fragmentClass
         fragmentClass = null
         var selectedPage = currentPage
 
@@ -91,8 +135,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragmentClass = HomeFragment::class.java
             }
 
-            R.id.nav_about -> {
+            R.id.nav_events -> {
                 selectedPage = 2
+                fragmentClass = EventsFragment::class.java
+            }
+
+            R.id.nav_leader_board -> {
+                selectedPage = 3
+                fragmentClass = LeaderBoardFragment::class.java
+            }
+
+            R.id.nav_about -> {
+                selectedPage = 4
                 fragmentClass = AboutFragment::class.java
             }
 
@@ -100,7 +154,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_send -> {
-
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "")
+                    type = "text/plain"
+                }
+                startActivity(sendIntent)
             }
         }
 
@@ -122,7 +181,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     e.printStackTrace()
                 }
 
-                supportFragmentManager.beginTransaction().setCustomAnimations(startAnimation, endAnimation).replace(R.id.mainContentSpace, fragment).commit()
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(startAnimation, endAnimation)
+                        .replace(R.id.mainContentSpace, fragment)
+                        .commit()
             }
             else{
                 fragmentClass = currentFragmentClass
@@ -132,5 +194,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun setTitleTo(title: String) {
+        supportActionBar!!.title = title
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        MediaManager.get().cancelAllRequests()
     }
 }

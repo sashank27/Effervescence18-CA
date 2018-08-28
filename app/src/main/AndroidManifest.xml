@@ -3,6 +3,8 @@
     package="org.effervescence.app18.ca">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".EffervescenceCA"
@@ -12,9 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="cloudinary://926419434869935:8APuPMlc9Z8XJr5JT31XZ1u501E@dxxconnay"
+            android:value="cloudinary://@dxxconnay"/>
         <activity
             android:name=".activities.SplashActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,18 +30,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChangePasswordActivity" />
-
         <activity
             android:name=".activities.LoginSignupActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/LoginSignupTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.EditUserDetailsActivity"></activity>
     </application>
 
 </manifest>

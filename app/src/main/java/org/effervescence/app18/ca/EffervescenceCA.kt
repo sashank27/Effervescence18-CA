@@ -1,16 +1,17 @@
 package org.effervescence.app18.ca
 
 import android.app.Application
+import com.cloudinary.android.MediaManager
 import timber.log.Timber
 
 class EffervescenceCA : Application() {
 
-    companion object {
-        val BASE_URL = "https://a664ab4f.ngrok.io"  //Base url for the API's Server
-    }
-
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+
+        val config = HashMap<String, String>()
+        config["cloud_name"] = "dxxconnay"
+        MediaManager.init(this, config)
     }
 }

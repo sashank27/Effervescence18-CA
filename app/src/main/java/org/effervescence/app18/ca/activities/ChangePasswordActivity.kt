@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
@@ -27,20 +28,25 @@ class ChangePasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_password)
+//        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         changePasswordButton.setOnClickListener { changePassword() }
         changePasswordCancelButton.setOnClickListener { finish() }
 
         val prefs = MyPreferences.customPrefs(this, Constants.MY_SHARED_PREFERENCE)
         userToken = prefs[Constants.KEY_TOKEN, Constants.TOKEN_DEFAULT]
-
-        AndroidNetworking.initialize(applicationContext)
     }
 
     private fun changePassword() {
-
-        if(newPasswordEditTextView.text.toString() != confirmNewPasswordEditTextView.text.toString()) {
-            confirmNewPasswordEditTextView.error = "Password didn't match"
+        if(currentPasswordEditTextView.text.isEmpty() || newPasswordEditTextView.text.length < 8){
+            currentPasswordEditTextViewLayout.error = "Doesn't match the current password"
+        }
+        if(newPasswordEditTextView.text.isEmpty() || newPasswordEditTextView.text.length < 8){
+            newPasswordEditTextViewLayout.error = "Password must be at least 8 characters long"
+            return
+        }
+        else if(newPasswordEditTextView.text.toString() != confirmNewPasswordEditTextView.text.toString()) {
+            confirmNewPasswordEditTextViewLayout.error = "Password didn't match"
             return
         }
 
@@ -67,5 +73,12 @@ class ChangePasswordActivity : AppCompatActivity() {
                         //Handle any error other than password mismatch
                     }
                 })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId) {
+            R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
