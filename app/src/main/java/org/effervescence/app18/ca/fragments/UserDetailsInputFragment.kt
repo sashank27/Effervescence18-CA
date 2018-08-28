@@ -86,6 +86,7 @@ class UserDetailsInputFragment : Fragment() {
                         prefs[Constants.DATE_OF_BIRTH_KEY] = dobString
                         prefs[Constants.GENDER_KEY] = getSelectedGender()
                         prefs[Constants.MOBILE_NO_KEY] = mobileNo
+                        prefs[Constants.FB_ID_KEY] = fbProfileIdLink
 
                         activity?.finish()
                         Toast.makeText(context, "Details saved successfully", Toast.LENGTH_LONG).show()
@@ -143,7 +144,7 @@ class UserDetailsInputFragment : Fragment() {
             fbIdLinkEditTextViewLayout.error = "This field should not be empty"
             valid = false
         } else {
-            mobileNoEditTextViewLayout.error = null
+            fbIdLinkEditTextViewLayout.error = null
         }
 
         return valid
