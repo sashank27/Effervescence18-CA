@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Change fields &amp; click Update"
+            android:textSize="24sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/nameEditTextViewLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/nameEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/collegeEditTextViewLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/collegeEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="College" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/mobileNoEditTextViewLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/mobileNoEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile"
+                android:inputType="textNoSuggestions|textVisiblePassword|phone" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/fbIdLinkEditTextViewLayout">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fbIdLinkEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="link" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/userDetailsSubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>
