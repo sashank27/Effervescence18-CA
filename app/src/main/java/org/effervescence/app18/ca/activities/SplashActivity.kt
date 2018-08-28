@@ -120,6 +120,7 @@ class SplashActivity : AppCompatActivity() {
         UserDetails.collegeName = prefs[Constants.COLLEGE_NAME_KEY, Constants.COLLEGE_NAME_DEFAULT]
         UserDetails.mobileNo = prefs[Constants.MOBILE_NO_KEY, Constants.MOBILE_NO_DEFAULT]
         UserDetails.facebookId = prefs[Constants.FB_ID_KEY, Constants.FB_ID_DEFAULT]
+        UserDetails.referralCode = prefs[Constants.REFERRAL_KEY, Constants.REFERRAL_DEFAULT]
         startActivity<HomeActivity>()
         finish()
     }
@@ -164,6 +165,7 @@ class SplashActivity : AppCompatActivity() {
         prefs[Constants.MOBILE_NO_KEY] = response.optString(Constants.MOBILE_NO_KEY)
         prefs[Constants.REFERRAL_KEY] = response.optString(Constants.REFERRAL_KEY)
         prefs[Constants.FB_ID_KEY] = response.optString(Constants.FB_ID_KEY)
+        prefs[Constants.REFERRAL_KEY] = response.optString(Constants.REFERRAL_KEY)
     }
 
     fun askForUserDetails() {

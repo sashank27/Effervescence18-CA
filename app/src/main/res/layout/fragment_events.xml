@@ -28,13 +28,4 @@
         android:padding="8dp"
         app:SpinKit_Color="@color/colorPrimary" />
 
-    <ProgressBar
-        android:id="@+id/upload_progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp" />
-
 </RelativeLayout>
