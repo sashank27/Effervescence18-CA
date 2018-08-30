@@ -19,13 +19,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/events_list_progress_bar"
-        style="@style/SpinKitView.ChasingDots"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:padding="8dp"
-        app:SpinKit_Color="@color/colorPrimary" />
-
 </RelativeLayout>
