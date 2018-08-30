@@ -140,8 +140,10 @@ class UserDetailsInputFragment : Fragment() {
             mobileNoEditTextViewLayout.error = null
         }
 
-        if (!(referralCode.startsWith("FE").and(referralCode.length == 10))) {
-            referralCodeEditTextViewLayout.error = "Invalid referral code"
+        if(referralCode.isNotEmpty()) {
+            if (!(referralCode.startsWith("FE").and(referralCode.length == 10))) {
+                referralCodeEditTextViewLayout.error = "Invalid referral code"
+            }
         }
 
         if(fbProfileIdLink.isEmpty()){

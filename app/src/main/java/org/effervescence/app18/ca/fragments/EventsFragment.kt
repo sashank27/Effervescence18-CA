@@ -17,18 +17,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
-import kotlinx.android.synthetic.main.fragment_events.*
 import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.adapters.MyEventsRecyclerViewAdapter
 import org.json.JSONArray
 import org.json.JSONObject
 import io.paperdb.Paper
+import kotlinx.android.synthetic.main.fragment_events.*
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.models.EventDetails
 import org.effervescence.app18.ca.utilities.*
@@ -63,6 +62,7 @@ class EventsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        events_swipe_refresh.isRefreshing = true
         buildRecyclerView()
 
         listAdapter.setOnClickListener(object : MyEventsRecyclerViewAdapter.OnItemClickListener {
@@ -92,19 +92,19 @@ class EventsFragment : Fragment() {
 
     private fun getEventsList() {
         var i = 0
-        if (mPrefs[Constants.EVENTS_CACHED_KEY, Constants.EVENTS_CACHED_DEFAULT] == "true") {
+        if (isEventsCached()) {
             doAsync {
-                mEventDetailsList = ArrayList(Paper.book().read<ArrayList<EventDetails>>(Constants.EVENTS_CACHED_KEY))
+                mEventDetailsList = ArrayList(Paper.book()
+                        .read<ArrayList<EventDetails>>(Constants.EVENTS_CACHED_KEY))
                 uiThread {
                     listAdapter.swapList(mEventDetailsList)
                     listAdapter.notifyDataSetChanged()
-                    events_list_progress_bar?.visibility = View.GONE
+                    events_swipe_refresh.isRefreshing = false
                 }
             }
         } else {
             mPrefs[Constants.EVENTS_CACHED_KEY] = "true"
             AndroidNetworking.get(Constants.EVENTS_LIST_URL)
-                    .setPriority(Priority.IMMEDIATE)
                     .build()
                     .getAsJSONArray(object : JSONArrayRequestListener {
                         override fun onResponse(response: JSONArray) {
@@ -115,17 +115,16 @@ class EventsFragment : Fragment() {
                                 }
                             }
                             listAdapter.notifyDataSetChanged()
-                            events_list_progress_bar?.visibility = View.GONE
+                            events_swipe_refresh.isRefreshing = false
                             doAsync {
                                 Paper.book().write(Constants.EVENTS_CACHED_KEY, mEventDetailsList)
-                                uiThread {
-                                    events_swipe_refresh.isRefreshing = false
-                                }
                             }
                         }
 
                         override fun onError(error: ANError) {
                             Log.e("EventsFragment", error.errorBody)
+                            events_swipe_refresh.isRefreshing = false
+                            Toast.makeText(context, "Connection Broke :(", Toast.LENGTH_SHORT).show()
                         }
                     })
         }
@@ -146,9 +145,10 @@ class EventsFragment : Fragment() {
     private fun uploadImageWithURI(imageUri: Uri?, title: String) {
 
         val progressDialog = ProgressDialog(context)
-        progressDialog.isIndeterminate = false
-        progressDialog.setMessage("0% Uploaded")
+        progressDialog.isIndeterminate = true
+        progressDialog.setMessage("Compressing Image...")
         progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
 
         if (imageUri != null) {
 
@@ -168,9 +168,9 @@ class EventsFragment : Fragment() {
                         }
 
                         override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
-                            val pro: Double = (bytes.toDouble() / totalBytes.toDouble()) * 100
-                            progressDialog.progress = pro.toInt()
-                            progressDialog.setMessage("${pro.toInt()}% Uploaded")
+//                            val pro: Double = (bytes.toDouble() / totalBytes.toDouble()) * 100
+//                            progressDialog.progress = pro.toInt()
+//                            progressDialog.setMessage("${pro.toInt()}% Uploaded")
                         }
 
                         override fun onReschedule(requestId: String?, error: ErrorInfo?) {
@@ -178,13 +178,12 @@ class EventsFragment : Fragment() {
                         }
 
                         override fun onError(requestId: String?, error: ErrorInfo?) {
-//                                mProgressDialog.dismiss()
                             Toast.makeText(context, "Error happened :(", Toast.LENGTH_SHORT).show()
                             Log.e("Image Upload Error", error.toString())
                         }
 
                         override fun onStart(requestId: String?) {
-                            progressDialog.show()
+                            progressDialog.setMessage("Uploading...")
                         }
 
                     })
@@ -228,6 +227,13 @@ class EventsFragment : Fragment() {
                 eventJSONObject.optInt(Constants.EVENT_PRIZE_KEY),
                 eventJSONObject.optInt(Constants.EVENT_POINTS_KEY),
                 eventJSONObject.optInt(Constants.EVENT_FEE_KEY))
+    }
+
+    private fun isEventsCached(): Boolean {
+        return when(mPrefs[Constants.EVENTS_CACHED_KEY, Constants.EVENTS_CACHED_DEFAULT]) {
+            "true" -> true
+            else -> false
+        }
     }
 
     override fun onAttach(context: Context) {
