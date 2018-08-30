@@ -34,6 +34,16 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send Referral" />
+
+            <item
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_info"
+                android:title="Developers Info"/>
+
+            <item
+                android:id="@+id/nav_contacts"
+                android:icon="@drawable/ic_call_grey"
+                android:title="Contacts"/>
         </menu>
     </item>
 

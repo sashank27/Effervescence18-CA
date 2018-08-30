@@ -17,10 +17,7 @@ import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import org.effervescence.app18.ca.R
-import org.effervescence.app18.ca.fragments.AboutFragment
-import org.effervescence.app18.ca.fragments.EventsFragment
-import org.effervescence.app18.ca.fragments.HomeFragment
-import org.effervescence.app18.ca.fragments.LeaderBoardFragment
+import org.effervescence.app18.ca.fragments.*
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
@@ -152,6 +149,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_share -> {
 
             }
+
             R.id.nav_send -> {
                 val referralCode = UserDetails.referralCode
                 val sendIntent: Intent = Intent().apply {
@@ -161,6 +159,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             "while registering for Effervescence-CA app to get extra 10 points. Download now: ")
                 }
                 startActivity(sendIntent)
+            }
+
+            R.id.nav_info -> {
+                selectedPage = 5
+                fragmentClass = InfoFragment::class.java
+            }
+
+            R.id.nav_contacts -> {
+                selectedPage = 6
+                fragmentClass = ContactsFragment::class.java
             }
         }
 

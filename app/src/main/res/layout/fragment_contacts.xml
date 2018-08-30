@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".fragments.ContactsFragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Related Issues"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="24dp"
+            android:text="Email: app@effervescence.org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="36dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="Sashank Mishra"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/sashank_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_call_white"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="36dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="Akshit Bansal"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/akshit_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_call_white"
+                android:clickable="true"
+                android:focusable="true"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="36dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="Rahul Jha"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/rahul_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_call_white"
+                android:clickable="true"
+                android:focusable="true"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Any Other Issue"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="24dp"
+            android:text="Email: team@effervescence.org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="36dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="Someone "
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/somepne_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_call_white"
+                android:clickable="true"
+                android:focusable="true"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
