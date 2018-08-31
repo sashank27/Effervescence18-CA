@@ -36,6 +36,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userNameTextView.text = UserDetails.userName
+        greetingsTextView.text = "Hey, ${UserDetails.Name}"
         collegeNameTextView.text = "Glad to have our campus ambassador in ${UserDetails.collegeName} :)"
 
         if (UserDetails.isFirstLaunch) {
@@ -60,12 +61,12 @@ class HomeFragment : Fragment() {
         pointsTextView?.text = "Points: ${UserDetails.points}"
         val rank = UserDetails.rank.toString()
         rank_text_view?.textSize = when (rank.length) {
-            4 -> 25f
-            3 -> 80f
-            2 -> 120f
-            else -> 180f
+            4 -> 50f
+            3 -> 70f
+            2 -> 90f
+            else -> 100f
         }
-        rank_text_view?.text = UserDetails.rank.toString()
+        rank_text_view?.text = rank
         rank_loading_spin_kit?.visibility = View.GONE
         rank_inferring_text_view?.visibility = View.GONE
         rank_inferring_text_view?.text = "Your Rank"
