@@ -1,10 +1,10 @@
 package org.effervescence.app18.ca.utilities
 
 object Constants{
-    const val BASE_URL = "http://192.168.43.191:9000/api/"
+    const val BASE_URL = "https://bb0629c4.ngrok.io/api/"
     const val REGULAR_USER_URL = BASE_URL + "regular_user/"
     const val CHANGE_PASSWORD_URL = BASE_URL + "password/change/"
-    const val EVENTS_LIST_URL = BASE_URL + "events/"
+    const val EVENTS_LIST_URL = BASE_URL + "eventslist/"
     const val LEADERBOARD_URL = BASE_URL + "leaderboard/"
     const val FILE_UPLOAD_URL = BASE_URL + "file_upload/"
     const val LOGIN_URL = BASE_URL + "login/"
@@ -36,7 +36,7 @@ object Constants{
     const val FB_ID_KEY = "fb_id"
     const val FB_ID_DEFAULT = "http://www.facebook.com/xxxxx"
     const val REFERRAL_KEY = "referral"
-    const val REFERRAL_DEFAULT = "effe00000"
+    const val REFERRAL_DEFAULT = "FE00000000"
     const val SUGGESTED_REFERRAL_KEY = "suggested_referral"
 
     const val NEW_PASSWORD_KEY = "new_password1"

@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_user_details_input.*
-
 import org.effervescence.app18.ca.R
 import com.androidnetworking.error.ANError
 import org.json.JSONObject
@@ -43,7 +42,7 @@ class UserDetailsInputFragment : Fragment() {
     }
 
     fun submit() {
-        
+
         val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Saving Information..")
@@ -58,7 +57,7 @@ class UserDetailsInputFragment : Fragment() {
         val referralCode = referralCodeEditTextView.text.toString()
         val fbProfileIdLink = fbIdLinkEditTextView.text.toString()
 
-        if(!validate(name, collegeName, mobileNo, fbProfileIdLink)){
+        if(!validate(name, collegeName, mobileNo,referralCode, fbProfileIdLink)){
             progressDialog.dismiss()
             return
         }
@@ -113,7 +112,8 @@ class UserDetailsInputFragment : Fragment() {
                 })
     }
 
-    private fun validate(name: String, collegeName: String, mobileNo: String, fbProfileIdLink: String): Boolean{
+    private fun validate(name: String, collegeName: String, mobileNo: String, referralCode:String,
+                         fbProfileIdLink: String): Boolean{
         var valid = true
 
         if (name.isEmpty()) {
@@ -138,6 +138,12 @@ class UserDetailsInputFragment : Fragment() {
             valid = false
         } else {
             mobileNoEditTextViewLayout.error = null
+        }
+
+        if(referralCode.isNotEmpty()) {
+            if (!(referralCode.startsWith("FE").and(referralCode.length == 10))) {
+                referralCodeEditTextViewLayout.error = "Invalid referral code"
+            }
         }
 
         if(fbProfileIdLink.isEmpty()){

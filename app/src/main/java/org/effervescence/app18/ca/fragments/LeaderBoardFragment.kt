@@ -38,7 +38,7 @@ class LeaderBoardFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     val list = ArrayList<LeaderbooardEntry>()
     lateinit var adapter: LeaderboardAdapter
-    private lateinit var mListViewModel : LeaderboardList
+    private lateinit var mListViewModel: LeaderboardList
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,7 +60,7 @@ class LeaderBoardFragment : Fragment() {
         leaderRecylcerView.isNestedScrollingEnabled = true
         leaderRecylcerView.addOnScrollListener(ScrollListener(back_view))
 
-        if(mListViewModel.list == null){
+        if (mListViewModel.list == null) {
             getLeaderboardData()
         } else {
             adapter.swapList(mListViewModel.list!!)

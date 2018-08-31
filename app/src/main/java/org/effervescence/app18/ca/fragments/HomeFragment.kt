@@ -45,10 +45,12 @@ class HomeFragment : Fragment() {
         }
 
         shareAppCardView.setOnClickListener {
+            val referralCode = UserDetails.referralCode
             val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "")
                 type = "text/plain"
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Hey, use my referral code \"$referralCode\" " +
+                        "while registering for Effervescence-CA app to get extra 10 points. Download now: ")
             }
             startActivity(sendIntent)
         }

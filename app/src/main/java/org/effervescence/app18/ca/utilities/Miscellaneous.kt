@@ -32,3 +32,4 @@ fun getImageUri(context: Context, imageBitmap: Bitmap, title: String): Uri {
     val path = MediaStore.Images.Media.insertImage(context.contentResolver, imageBitmap, title, null)
     return Uri.parse(path)
 }
+
