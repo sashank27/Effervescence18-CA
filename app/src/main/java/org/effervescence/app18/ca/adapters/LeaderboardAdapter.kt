@@ -51,8 +51,13 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
     }
 
     fun swapList(list: ArrayList<LeaderbooardEntry>){
-        leaderboardEntry.add(LeaderbooardEntry())
-        leaderboardEntry.add(LeaderbooardEntry())
+        if(leaderboardEntry.size == 0){
+            leaderboardEntry.add(LeaderbooardEntry())
+            leaderboardEntry.add(LeaderbooardEntry())
+        } else {
+            leaderboardEntry.removeAt(leaderboardEntry.size - 1)
+        }
+
         leaderboardEntry.addAll(list)
         leaderboardEntry.add(LeaderbooardEntry())
         notifyDataSetChanged()
