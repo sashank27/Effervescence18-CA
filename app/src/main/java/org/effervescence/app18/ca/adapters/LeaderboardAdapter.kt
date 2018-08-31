@@ -24,6 +24,8 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
     override fun onBindViewHolder(holder: LeaderBoardViewHolder, position: Int) {
         if(position==0||position==1||position==itemCount-1){
             holder.itemView.visibility = View.INVISIBLE
+        } else {
+            holder.itemView.visibility = View.VISIBLE
         }
         holder.bind(leaderboardEntry[position], position-1)
     }
@@ -46,6 +48,8 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
             }
             if(position >= itemCount-2){
                 separator.visibility = View.INVISIBLE
+            }else {
+                separator.visibility = View.VISIBLE
             }
         }
     }
