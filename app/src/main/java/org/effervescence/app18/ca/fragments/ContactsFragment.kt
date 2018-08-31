@@ -34,9 +34,13 @@ class ContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sashank_fab.setOnClickListener{ callNumber("917007406601") }
+        sashank_fab.setOnClickListener{ callNumber("+917275253323") }
         akshit_fab.setOnClickListener { callNumber("+918872800037") }
-        rahul_fab.setOnClickListener { callNumber("+919082374303") }
+        rahul_fab.setOnClickListener { callNumber("+918452800051") }
+        nairit_fab.setOnClickListener { callNumber("+917607020660") }
+        jai_fab.setOnClickListener { callNumber("+919560503984") }
+        ronak_fab.setOnClickListener { callNumber("+919785158100") }
+        kajal_fab.setOnClickListener { callNumber("+918755381662") }
     }
 
     private fun callNumber(number: String) {
