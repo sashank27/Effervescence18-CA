@@ -85,6 +85,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:drawableStart="@drawable/ic_file_upload"
             android:includeFontPadding="false"
             android:text="Upload"
             android:textAllCaps="false"

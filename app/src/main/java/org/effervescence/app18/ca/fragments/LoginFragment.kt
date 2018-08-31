@@ -53,8 +53,6 @@ class LoginFragment : Fragment() {
             return
         }
 
-        btnLogin.isEnabled = false
-
         val progressDialog = ProgressDialog(context)
         progressDialog.isIndeterminate = true
         progressDialog.setMessage("Authenticating..")
@@ -102,7 +100,7 @@ class LoginFragment : Fragment() {
                 })
     }
 
-    fun showSignupFragment() {
+    private fun showSignupFragment() {
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         val signupFragment = SignupFragment()
         transaction.setCustomAnimations(R.anim.push_left_in_fast, R.anim.push_left_out_fast)
@@ -115,14 +113,14 @@ class LoginFragment : Fragment() {
         var valid = true
 
         if (username.isEmpty() || username.length < 3) {
-            inputUsernameLoginLayout.error = "Username must be of at least 3 characters"
+            inputUsernameLoginLayout.error = "Wrong Username"
             valid = false
         } else {
             inputUsernameLoginLayout.error = null
         }
 
-        if (password.isEmpty() || password.length < 8 ) {
-            inputPasswordLoginLayout.error = "Password must be of at least 8 characters"
+        if (password.isEmpty() ) {
+            inputPasswordLoginLayout.error = "Wrong Password"
             valid = false
         } else {
             inputPasswordLoginLayout.error = null

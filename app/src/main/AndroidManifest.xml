@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="cloudinary://926419434869935:8APuPMlc9Z8XJr5JT31XZ1u501E@dxxconnay"
-            android:value="cloudinary://@dxxconnay" />
+            android:name="cloudinary://867857599265414:JBu1ZCiRKPjAzVU3chxr0I1pXj4@djvuib63r"
+            android:value="cloudinary://@djvuib63r" />
 
         <activity
             android:name=".activities.SplashActivity"

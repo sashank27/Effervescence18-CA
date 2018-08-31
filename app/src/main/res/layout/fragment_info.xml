@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/rank_background" />
+                android:src="@drawable/sashank_image" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:src="@drawable/rank_background" />
+                    android:src="@drawable/akshit_image" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:src="@drawable/rank_background" />
+                    android:src="@drawable/rahul_image" />
 
                 <TextView
                     android:layout_width="wrap_content"
