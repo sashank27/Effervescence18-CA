@@ -16,6 +16,7 @@ import org.effervescence.app18.ca.R
 import org.effervescence.app18.ca.listeners.OnFragmentInteractionListener
 import org.effervescence.app18.ca.utilities.Constants
 import org.effervescence.app18.ca.utilities.MyPreferences
+import org.effervescence.app18.ca.utilities.MyPreferences.get
 import org.effervescence.app18.ca.utilities.MyPreferences.set
 import org.effervescence.app18.ca.utilities.UserDetails
 import org.jetbrains.anko.doAsync
@@ -35,9 +36,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userNameTextView.text = UserDetails.userName
-        greetingsTextView.text = "Hey, ${UserDetails.Name}"
-        collegeNameTextView.text = "Glad to have our campus ambassador in ${UserDetails.collegeName} :)"
+
+        displayDetails()
 
         if (UserDetails.isFirstLaunch) {
             loadUserDetails()
@@ -57,8 +57,15 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun displayDetails() {
+        userNameTextView.text = UserDetails.userName
+        greetingsTextView.text = "Hey, ${UserDetails.Name}"
+        collegeNameTextView.text = "Glad to have our campus ambassador in ${UserDetails.collegeName} :)"
+    }
+
     private fun displayReportCard() {
         pointsTextView?.text = "Points: ${UserDetails.points}"
+
         val rank = UserDetails.rank.toString()
         rank_text_view?.textSize = when (rank.length) {
             4 -> 50f
@@ -66,10 +73,10 @@ class HomeFragment : Fragment() {
             2 -> 90f
             else -> 100f
         }
+
         rank_text_view?.text = rank
         rank_loading_spin_kit?.visibility = View.GONE
         rank_inferring_text_view?.visibility = View.GONE
-        rank_inferring_text_view?.text = "Your Rank"
     }
 
     private fun loadUserDetails() {
@@ -92,6 +99,14 @@ class HomeFragment : Fragment() {
                             prefs[Constants.MOBILE_NO_KEY] = response.optString(Constants.MOBILE_NO_KEY)
                             prefs[Constants.REFERRAL_KEY] = response.optString(Constants.REFERRAL_KEY)
                             prefs[Constants.FB_ID_KEY] = response.optString(Constants.FB_ID_KEY)
+
+                            UserDetails.Name = prefs[Constants.NAME_KEY, Constants.NAME_DEFAULT]
+                            UserDetails.collegeName = prefs[Constants.COLLEGE_NAME_KEY, Constants.COLLEGE_NAME_DEFAULT]
+                            UserDetails.mobileNo = prefs[Constants.MOBILE_NO_KEY, Constants.MOBILE_NO_DEFAULT]
+                            UserDetails.facebookId = prefs[Constants.FB_ID_KEY, Constants.FB_ID_DEFAULT]
+                            UserDetails.referralCode = prefs[Constants.REFERRAL_KEY, Constants.REFERRAL_DEFAULT]
+
+                            displayDetails()
                         }
 
                         UserDetails.isFirstLaunch = false
