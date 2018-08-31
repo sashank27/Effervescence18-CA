@@ -90,16 +90,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12">
+            app:layout_constraintTop_toBottomOf="@+id/collegeNameTextView">
 
             <ImageView
                 android:id="@+id/imageView11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxWidth="250dp"
+                android:maxWidth="240dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1.18:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -261,17 +261,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shareAppCardView" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="sans-serif"
-            android:text="Your Rank"
-            android:textColor="@color/baseTextPara"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/collegeNameTextView" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

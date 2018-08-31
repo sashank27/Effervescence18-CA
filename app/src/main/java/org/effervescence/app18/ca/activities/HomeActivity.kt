@@ -62,24 +62,24 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else if (currentPage != 1) {
-            fragmentClass = HomeFragment::class.java
-            try {
-                fragment = fragmentClass!!.newInstance() as Fragment
-            } catch (e: Exception) {
-                e.printStackTrace()
+        when {
+            drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+            currentPage != 1 -> {
+                fragmentClass = HomeFragment::class.java
+                try {
+                    fragment = fragmentClass!!.newInstance() as Fragment
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                nav_view.setCheckedItem(R.id.nav_home)
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.push_right_out, R.anim.push_right_in)
+                        .replace(R.id.mainContentSpace, fragment)
+                        .commit()
+
+                currentPage = 1
             }
-
-            supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.push_right_out, R.anim.push_right_in)
-                    .replace(R.id.mainContentSpace, fragment)
-                    .commit()
-
-            currentPage = 1
-        } else {
-            super.onBackPressed()
+            else -> super.onBackPressed()
         }
     }
 
