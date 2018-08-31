@@ -106,6 +106,7 @@ class EventsFragment : Fragment() {
         } else {
             mPrefs[Constants.EVENTS_CACHED_KEY] = "true"
             AndroidNetworking.get(Constants.EVENTS_LIST_URL)
+                    .setTag("eventsListRequest")
                     .build()
                     .getAsJSONArray(object : JSONArrayRequestListener {
                         override fun onResponse(response: JSONArray) {
@@ -159,7 +160,7 @@ class EventsFragment : Fragment() {
 
             mImageUploadRequestId = MediaManager.get()
                     .upload(imageUri).options(options)
-                    .unsigned("i5nefzvx")
+                    .unsigned("omajkdmo")
                     .callback(object : UploadCallback {
 
                         override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
@@ -248,6 +249,7 @@ class EventsFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        AndroidNetworking.cancel("eventsListRequest")
         listener = null
     }
 }

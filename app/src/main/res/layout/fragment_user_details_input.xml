@@ -118,21 +118,25 @@
 
                         <TextView
                             android:id="@+id/birthdayTextView"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:layout_weight="1"
                             android:text="Date of Birth"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/dobTextView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:text="yyyy-mm-dd"
+                            android:layout_weight="1"
+                            android:background="@drawable/dob_background"
+                            android:gravity="center_horizontal"
+                            android:paddingBottom="2dp"
+                            android:paddingTop="2dp"
+                            android:text="YYYY-MM-DD"
                             android:textSize="20sp" />
                     </LinearLayout>
 

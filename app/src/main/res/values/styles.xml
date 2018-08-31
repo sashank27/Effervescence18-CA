@@ -14,7 +14,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#512da8</item>
         <item name="android:fontFamily">@font/quicksand</item>
-        <!--<item name="android:windowBackground">@drawable/background3</item>-->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
@@ -22,8 +21,6 @@
     <style name="SplashTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
-        <!--<item name="android:fitsSystemWindows">true</item>-->
     </style>
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">

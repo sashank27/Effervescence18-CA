@@ -45,6 +45,8 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
             emailTextView.text = entry.collegeName
             if(entry.isCurrentUser){
                 itemView.setBackgroundResource(R.color.gray1)
+            } else {
+                itemView.setBackgroundResource(R.color.gray0)
             }
             if(position >= itemCount-2){
                 separator.visibility = View.INVISIBLE

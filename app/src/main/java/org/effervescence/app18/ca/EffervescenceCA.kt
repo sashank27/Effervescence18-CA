@@ -11,7 +11,7 @@ class EffervescenceCA : Application() {
         Timber.plant(Timber.DebugTree())
 
         val config = HashMap<String, String>()
-        config["cloud_name"] = "dxxconnay"
+        config["cloud_name"] = "djvuib63r"
         MediaManager.init(this, config)
     }
 }

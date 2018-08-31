@@ -71,7 +71,7 @@ class LeaderBoardFragment : Fragment() {
 
     }
 
-    fun getLeaderboardData() {
+    private fun getLeaderboardData() {
         AndroidNetworking.get(Constants.LEADERBOARD_URL)
                 .addHeaders(Constants.AUTHORIZATION_KEY, Constants.TOKEN_STRING + UserDetails.Token)
                 .setPriority(Priority.IMMEDIATE)
