@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="none"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,39 +24,41 @@
             android:textStyle="bold" />
 
         <TextView
-            android:layout_marginTop="32dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="24dp"
-            android:text="Email: app@effervescence.org"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
+            android:text="Email: app@effervescence.org"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="36dp"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Sashank Mishra"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sashank Mishra"
+                android:textSize="18sp" />
+
             <View
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/sashank_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:clickable="true"
                 android:focusable="true"
@@ -64,83 +67,87 @@
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="36dp"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Akshit Bansal"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Akshit Bansal"
+                android:textSize="18sp" />
+
             <View
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/akshit_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/ic_call_white"
                 android:clickable="true"
                 android:focusable="true"
+                android:src="@drawable/ic_call_white"
                 app:fabSize="mini" />
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="36dp"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Rahul Jha"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rahul Jha"
+                android:textSize="18sp" />
+
             <View
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/rahul_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/ic_call_white"
                 android:clickable="true"
                 android:focusable="true"
+                android:src="@drawable/ic_call_white"
                 app:fabSize="mini" />
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -153,48 +160,174 @@
             android:textStyle="bold" />
 
         <TextView
-            android:layout_marginTop="32dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="24dp"
-            android:text="Email: team@effervescence.org"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
+            android:text="Email: team@effervescence.org"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="36dp"
-            android:gravity="center_vertical">
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="Someone "
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/somepne_fab"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Nairit"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/nairit_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:elevation="2dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/ic_call_white"
                 android:clickable="true"
                 android:focusable="true"
+                android:src="@drawable/ic_call_white"
                 app:fabSize="mini" />
 
             <View
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jai"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/jai_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:elevation="2dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_call_white"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ronak"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/ronak_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:elevation="2dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_call_white"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:clipChildren="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kajal"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/kajal_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:elevation="2dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_call_white"
+                app:fabSize="mini" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

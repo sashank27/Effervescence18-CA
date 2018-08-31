@@ -162,13 +162,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_info -> {
-                selectedPage = 5
-                fragmentClass = InfoFragment::class.java
+                val infoIntent = Intent(this, ContactInfoActivity::class.java)
+                infoIntent.putExtra("fragmentIndex", 0)
+                startActivity(infoIntent)
             }
 
             R.id.nav_contacts -> {
-                selectedPage = 6
-                fragmentClass = ContactsFragment::class.java
+                val infoIntent = Intent(this, ContactInfoActivity::class.java)
+                infoIntent.putExtra("fragmentIndex", 1)
+                startActivity(infoIntent)
             }
         }
 
