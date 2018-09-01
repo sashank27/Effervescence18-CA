@@ -13,7 +13,7 @@ class LeaderboardAdapter(val context: Context) : RecyclerView.Adapter<Leaderboar
 
     private var leaderboardEntry = ArrayList<LeaderbooardEntry>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderBoardViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.list_litem_eaderboard, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.list_item_leaderboard, parent, false)
         return LeaderBoardViewHolder(itemView)
     }
 

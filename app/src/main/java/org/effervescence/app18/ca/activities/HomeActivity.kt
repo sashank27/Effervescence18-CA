@@ -146,17 +146,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragmentClass = AboutFragment::class.java
             }
 
-            R.id.nav_share -> {
-
-            }
-
             R.id.nav_send -> {
                 val referralCode = UserDetails.referralCode
                 val sendIntent: Intent = Intent().apply {
                     type = "text/plain"
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, "Hey, use my referral code $referralCode " +
-                            "while registering for Effervescence-CA app to get extra 10 points. Download now: ")
+                            "while registering for Effervescence'18 CA app to get extra 10 points. Download now: ")
                 }
                 startActivity(sendIntent)
             }
